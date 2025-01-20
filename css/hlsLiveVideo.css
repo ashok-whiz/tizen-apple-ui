@@ -1,0 +1,31 @@
+video#video {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  /* width: 1920px;
+        height: 1080px; */
+}
+
+body {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0px;
+  width: 100%;
+  height: 100vh;
+}
+
+/* 
+.mediaError {
+  display: flex;
+  justify-content: center;
+  color: rgb(232, 48, 6);
+}
+.errorDiv{
+  display: block;
+} */

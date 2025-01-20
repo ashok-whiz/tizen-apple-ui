@@ -1,0 +1,257 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  display: none;
+  z-index: 99;
+}
+
+.dialog {
+  background-color: #000;
+  
+  padding: 20px;
+  border-radius: 5px;
+  position: absolute;
+  color: #fff;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  
+  bottom: 5%;
+  left: 88%;
+  margin-left: -80px;
+  width: 300px;
+
+  
+}
+
+.dialog-content {
+  margin-bottom: 15px;
+}
+
+#ok {
+  text-align: center;
+  margin-left: 200px;
+}
+#cancel {
+  text-align: left;
+}
+
+.popup-focused {
+  background-color: #fff !important;
+  border: none;
+  color: black !important;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  font-size: 40px;
+  border-radius: 10px;
+  margin: 30px;
+  padding: 10px;
+  width: 150px;
+}
+
+.popup-button {
+  background-color: #2b2b32; /* black */
+  border: none;
+  color: white;
+  /* padding: 15px 32px; */
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  font-size: 40px;
+  border-radius: 50px;
+  /* margin: 30px;
+  padding: 10px; */
+  width: 500px;
+}
+.popup-header {
+  font-size: 6em;
+  margin: 30px;
+  padding: 20px;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.popup-message {
+  font-size: 35px;
+  margin: 30px;
+  padding: 20px;
+  color: #ffffff;
+  /* font-weight: bold; */
+}
+
+.caption-container {
+  display: flex;
+  font-size: 30px;
+  /* background-color: #000; */
+}
+
+/* .caption-content {
+  background-color: #f1f1f1;
+  margin: 10px;
+  width: 90px;
+  color: #000;
+  padding: 10px;
+  font-size: 15px;
+} */
+
+.captionFocused {
+  /* padding: 5px; */
+  /* border: 2px solid #07f068; */
+  /* background-color: #07f068; */
+  background-color: yellow;
+  /* width: 90px;
+      height: 50px; */
+  /* height: 240px; */
+  z-index: 5;
+}
+
+/* POPUP FOR CAP SETTINGS BOF NEW VERSION */
+
+/* Popup container - can be anything you want */
+.captionSettingsPopup {
+  position: fixed;
+  /* top: 0;
+  left: 0; */
+  width: 25%;
+  height: 90%;
+
+  display: none;
+  z-index: 99;
+
+  background-color: #000;
+  /* width: 1500px;
+  height: 900px; */
+  padding: 20px;
+  border-radius: 5px;
+  /* position: absolute; */
+  color: #fff;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /*------------*/
+  bottom: 5%;
+  left: 80%;
+  /* margin-left: -80px; */
+  /* width: 300px; */
+}
+
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 300px;
+  background-color: #0a0a0a;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: fixed;
+  z-index: 1;
+  bottom: 5%;
+  left: 88%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* EOF POPUP NEW VERSION */
+
+.menu-focused {
+  margin: 5px;
+  padding: 5px;
+  width: auto;
+  
+  border-radius: 5px;
+  background-color: #fff;
+  color: black !important;
+  font-weight: bold;
+}
+
+.captitle {
+  font-size: 2em;
+  /* display: inline; */
+  font-weight: bold;
+  /* width: 300px; */
+
+  /* margin: 10px; */
+  padding: 15px;
+
+  color: #ffffff;
+
+  margin: 0px;
+}
+
+.gtsign {
+  float: right;
+}
+
+.captionHeading {
+  font-size: 2.5em;
+  margin: 5px;
+  padding: 10px;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.exitFocus {
+  background-color: #fff; /* black */
+  border: none;
+  color: #000;
+  /* padding: 15px 32px; */
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  font-size: 40px;
+  border-radius: 50px;
+  /* margin: 30px; */
+  /* padding: 10px; */
+  width: 500px;
+}

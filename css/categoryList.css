@@ -1,0 +1,47 @@
+.flex-container {
+  display: flex;
+  flex: 0.33;
+  background-color: #f19561;
+  padding: 10px 0;
+  /* flex-wrap: wrap;*/
+}
+
+.item {
+  /* background-color: #f1f1f1; */
+  /* background-color: #272626; */
+
+  margin: 20px;
+  padding: 10px;
+  font-size: 30px;
+  /* width: 500px; */
+  /* height: 200px; */
+
+  /* background-color: red; */
+  position: relative;
+  /* width: 56.25%; */
+  /*padding-top: 56.25%; */ /* 16:9 Aspect Ratio */
+}
+
+.h2 {
+  font-size: 60px;
+  margin: 30px;
+  padding: 20px;
+  color: #ffffff;
+  font-weight: bold;
+}
+.title {
+  width: 300px;
+  font-size: 35px;
+   color: #ffffff;
+}
+
+/* unvisited link */
+a:link {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* visited link */
+a:visited {
+  color: red;
+}
