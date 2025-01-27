@@ -1,8 +1,13 @@
 var weatherData;
+var weatherPageKeyEvents = {
+  page: true,
+  fullscreen: false,
+};
 async function weather(url) {
-  url = "https://wx.whizti.com/api/weather/803?zip_code=39503";
+  //url = "https://wx.whizti.com/api/weather/803?zip_code=39503";
   // const spinner = document.getElementById("spinner");
   // spinner.removeAttribute("hidden");
+  console.log(url);
   if (url === undefined) return;
   const city = document.querySelector("#city");
   const icon = document.querySelector("#wicon");
@@ -34,6 +39,9 @@ async function weather(url) {
 }
 
 function openWeather() {
+  const weatherIcon = document.getElementById("weather-icon");
+  if (weatherIcon.classList.contains("focused"))
+    weatherIcon.classList.remove("focused");
   const weatherPage = document.getElementById("weatherPage");
   weatherPage.style.display = "block";
   const currentHeading = document.querySelector("#current-heading");
@@ -49,8 +57,9 @@ function openWeather() {
               </div>
 
               <div class="current-box">
-              <div class="icondiv"><img class="current-icon-xx" src="${weatherData.CurrentCondition.WeatherIconURL}"/></div>
+              <div class="icondiv"><img class="current-icon-top" src="${weatherData.CurrentCondition.WeatherIconURL}"/></div>
               <div class="current-text">Feels like ${weatherData.CurrentCondition.RealFeelTemperature}&#8457;</div>
+              
               </div>
 
               </div>
@@ -134,6 +143,7 @@ function openWeather() {
     // mp4 video
     video.setAttribute("src", weatherData.StationForecast.VideoForecastUrl);
     video.setAttribute("autoplay", "autoplay");
+    video.classList.add("weather-video-focused");
     video.setAttribute(
       "poster",
       weatherData.StationForecast.VideoForecastThumbnailUrl,
@@ -144,9 +154,16 @@ function openWeather() {
     //   "https://fueltools-prod01-v1-fast.fuelmedia.io/fast/clip/play/60da9136-c915-4159-b6d2-740394a21c08.m3u8";
 
     if (Hls.isSupported()) {
+      video.setAttribute("autoplay", "autoplay");
+      video.classList.add("weather-video-focused");
+      video.setAttribute(
+        "poster",
+        weatherData.StationForecast.VideoForecastThumbnailUrl,
+      );
       var weatherhls = new Hls();
       weatherhls.loadSource(videoSrcHls);
       weatherhls.attachMedia(video);
+      video.classList.add("weather-video-focused");
       weatherhls.on(Hls.Events.MANIFEST_PARSED, function () {
         video.play();
       });
@@ -157,17 +174,46 @@ function openWeather() {
   const hourlyContainer = document.querySelector("#hourly-container");
   hourlyContainer.innerHTML = "";
   weatherData.HourlyForecast.forEach((element, index) => {
-    hourlyContainer.innerHTML += ` <div class="hourly-item"><div class="hourly-box">${element.Hour_Display}</div>
-  <div class="hour-desc">${element.WeatherDescShort}</div>
-  <div class="hourly-box"><img class="current-icon" src="${element.WeatherIconURL}"/></div>
-  <div class="hour-precip">
+    //   hourlyContainer.innerHTML += ` <div class="hourly-item"><div class="hourly-box">${element.Hour_Display}</div>
+    // <div class="hour-desc">${element.WeatherDescShort}</div>
+    // <div class="hourly-box"><img class="current-icon" src="${element.WeatherIconURL}"/></div>
+    // <div class="hour-precip">
 
-  <div class="hourly-temperature">${element.Temperature}&#8457;</div>
-  <div class="hourly-precipitation">${element.PrecipChance}%</div>
-  
-  </div>
-  
-  <div class="hourly-box">Wind: ${element.WindDirection} ${element.WindSpeed} mph</div></div>`;
+    // <div class="hourly-temperature">${element.Temperature}&#8457;</div>
+    // <div class="hourly-precipitation">${element.PrecipChance}%</div>
+
+    // </div>
+
+    // <div class="hourly-box">Wind: ${element.WindDirection} ${element.WindSpeed} mph</div></div>`;
+
+    //   hourlyContainer.innerHTML += ` <div class="hourly-item"><div class="hourly-box">${element.Hour_Display}</div>
+    // <div class="hour-desc">${element.WeatherDescShort}</div>
+    // <div class="hourly-box"><img class="current-icon" src="${element.WeatherIconURL}"/></div>
+    // <div class="hour-precip">
+
+    // <div class="hourly-temperature">${element.Temperature}&#8457;</div>
+    // <div class="hourly-precipitation">${element.PrecipChance}%</div>
+
+    // </div>
+
+    // <div class="hourly-box">Wind: ${element.WindDirection} ${element.WindSpeed} mph</div></div>
+
+    hourlyContainer.innerHTML += `<div class="hourly-item">
+      <div class="time">${element.Hour_Display}</div>
+      <div class="current_text">${element.WeatherDescShort}</div>
+      <div>
+        <img
+          class="current-icon-top-new"
+          src="${element.WeatherIconURL}"
+        />
+      </div>
+      <div class="pan">
+        <div class="pan_child">${element.Temperature}&#8457;</div>
+        <div>${element.PrecipChance}%</div>
+      </div>
+
+      <div class="wind">Wind: ${element.WindDirection} ${element.WindSpeed} mph</div></div> 
+  `;
   });
 
   const weekdays = document.querySelector("#weekly");
@@ -190,6 +236,14 @@ function closeWeather() {
   weatherVideo.pause();
   removeFocus();
   weatherPage.style.display = "none";
+  const itemid = sessionStorage.getItem("itemId");
+  const playingItem = document.getElementById(itemid);
+  playingItem.classList.add("focused");
+
+  playingItem.scrollIntoView(true);
+  playingItem.scrollIntoView({
+    block: "start",
+  });
 }
 
 function removeFocus() {
@@ -208,5 +262,31 @@ function removeFocus() {
   if (weekly.children[0].className === "focused") {
     console.log("CALLED WEEKLY");
     weekly.children[0].classList.remove("focused");
+  }
+}
+
+function fullScreen() {
+  const video = document.getElementById("weather-video");
+  video.classList.remove("weatherVideo");
+  video.classList.remove("weather-video-focused");
+  video.classList.add("full-screen");
+
+  return;
+}
+
+function miniWeatherVideo() {
+  if (
+    popupVisibilitybyId("weatherPage") &&
+    document.getElementById("weather-video").classList.contains("full-screen")
+  ) {
+    const video = document.getElementById("weather-video");
+    video.classList.remove("full-screen");
+    video.classList.add("weatherVideo");
+    video.classList.add("weather-video-focused");
+    weatherPageKeyEvents.fullscreen = false;
+    // throw new Error("Minimized video!");
+  } else {
+    closeWeather();
+    videoElement.play();
   }
 }

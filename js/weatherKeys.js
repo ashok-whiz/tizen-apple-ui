@@ -16,9 +16,33 @@ function weatherKeys() {
     tizen.tvinputdevice.registerKey("MediaRewind");
     tizen.tvinputdevice.registerKey("MediaFastForward");
     tizen.tvinputdevice.registerKey("Exit");
-
+    const wvideo = document.getElementById("weather-video");
+    const status = document.getElementById("weather-video-status");
+    if (!popupVisibilitybyId("weatherPage")) return;
     switch (e.keyCode) {
+      case 13:
+        setTimeout(() => {
+          weatherPageKeyEvents.fullscreen = true;
+        }, 1000);
+        // weatherPageKeyEvents.fullscreen = true;
+        if (!weatherPageKeyEvents.fullscreen) return;
+        console.log("In Weather key handler");
+        if (wvideo.classList.contains("weather-video-focused")) {
+          fullScreen();
+          return;
+        }
+        if (wvideo.classList.contains("full-screen") && wvideo.paused) {
+          status.style.display = "none";
+          wvideo.play();
+        } else {
+          status.style.display = "block";
+          status.textContent = "Play";
+          wvideo.pause();
+        }
+        break;
+
       case 37: // Left key
+        if (wvideo.classList.contains("full-screen")) return;
         let leftKey = document.getElementById("hourly-container");
         let lcount = leftKey.children;
         let lcounter = 0;
@@ -61,11 +85,13 @@ function weatherKeys() {
         if (currentIndex > 0) {
           currentIndex--;
           updateHighlight(currentIndex);
+          addVideoFocuse();
         }
         break;
 
       case 39: //Right arrow
         if (!popupVisibilitybyId("weatherPage")) return;
+        if (wvideo.classList.contains("full-screen")) return;
         if (MINI_TIMEOUT_ID) {
           clearTimeout(MINI_TIMEOUT_ID);
         }
@@ -107,13 +133,72 @@ function weatherKeys() {
         }
         break;
       case 40: //DOWN arrow
-        console.log("currI ndex", currentIndex, "item lenght ", items.length);
+        //console.log("currI ndex", currentIndex, "item lenght ", items.length);
+        if (wvideo.classList.contains("full-screen")) return;
         if (currentIndex < items.length - 1) {
           currentIndex++;
           updateHighlight(currentIndex);
         }
 
-        console.log("from weather page");
+        break;
+
+      case 10009: //back button
+        if (
+          popupVisibilitybyId("weatherPage") &&
+          document
+            .getElementById("weather-video")
+            .classList.contains("full-screen")
+        ) {
+          const video = document.getElementById("weather-video");
+          video.classList.remove("full-screen");
+          video.classList.add("weatherVideo");
+          video.classList.add("weather-video-focused");
+          //weatherPageKeyEvents.fullscreen = false;
+          throw new Error("Minimized video!");
+        } else {
+          weatherPageKeyEvents.fullscreen = false;
+          closeWeather();
+          videoElement.play();
+        }
+        break;
+
+      case 19: //Media Pause
+        status.style.display = "block";
+        status.textContent = "Play";
+        wvideo.pause();
+        break;
+
+      case 415: // Media Play trick play
+        if (wvideo.paused) {
+          status.style.display = "none";
+          wvideo.play();
+        }
+
+        break;
+
+      case 413: //stop
+        wvideo.pause();
+        wvideo.currentTime = 0;
+        status.textContent = "Play";
+        status.style.display = "block";
+        break;
+
+      case 10252:
+        console.log("code 10252");
+        const MediaPlayPause = document.getElementById("play");
+        if (videoElement.paused) {
+          MediaPlayPause.textContent = "Pause";
+          videoElement.play();
+        } else {
+          MediaPlayPause.textContent = "Play";
+          videoElement.pause();
+        }
+        var skn = document.getElementById("skin");
+        skn.style.display = "block";
+        videoElement.addEventListener("timeupdate", updateProgress);
+        setTimeout(() => {
+          skn.style.display = "none";
+        }, 5000);
         break;
 
       default:
@@ -143,7 +228,10 @@ function updateHighlight(index) {
       item.classList.remove("focused");
     }
   });
-
+  const weather_video = document.getElementById("weather-video");
+  if (weather_video.classList.contains("weather-video-focused")) {
+    weather_video.classList.remove("weather-video-focused");
+  }
   if (index !== 0) items[index].children[0].classList.add("focused");
 
   items[index].children[0].scrollIntoView(true);
@@ -155,4 +243,11 @@ function updateHighlight(index) {
   //   block: "start",
   //   //inline: "nearest",
   // });
+}
+
+function addVideoFocuse() {
+  const weather_video = document.getElementById("weather-video");
+  if (!weather_video.classList.contains("weather-video-focused")) {
+    weather_video.classList.add("weather-video-focused");
+  }
 }

@@ -22,7 +22,7 @@ hr {
 */
 
 .bgimage {
-  background-image: url("../images/Splash_Screen1920x1080.jpg");
+  background-image: url("../images/Splash_Screen1920x1080.png");
   
   background-repeat: no-repeat;
   background-size: cover;
@@ -76,6 +76,7 @@ hr {
   text-align: left; */
   display: none;
   margin-top: 2px;
+  float: left;
 }
 .header-image{
   /* width: 57.8em; */
@@ -104,8 +105,8 @@ hr {
         /* position: relative;
         top: 33px;
         left: 29px; */
-        width: 100vh;/*929px;*/
-        height: 532px; /*523px; /*520px;*/
+        width: 960px;/*929px;*/
+        height: 541px; /*523px; /*520px;*/
         background-image: url('../css/OTT_shadow-2.png'), var(--bg-image);
         background-size: cover;
         background-position: center;
@@ -217,9 +218,9 @@ hr {
 
 .selected-item {
  
-  margin-top: 490px !important;
+  margin-top: 475px !important;
   position:fixed;
-  margin-left: 45px;
+  margin-left: 35px;
   font-size: 40px;
   /* display: inline; */
   font-weight: bold;
@@ -289,12 +290,13 @@ hr {
   
   margin-top: 40px;
   
+  
   /* padding-top: 0px; */
 
   padding-right: 30px;
   padding-bottom: 25px;
   padding-left: 25px;
-  /* height: 500px; */
+  /* height: 300px; */
   height: 430px;
   position: relative;
   overflow-y: hidden;

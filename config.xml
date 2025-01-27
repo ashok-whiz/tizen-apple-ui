@@ -8,7 +8,7 @@
     <tizen:metadata key="http://samsung.com/tv/metadata/prelaunch.support" value="true"/>
     <tizen:metadata key="http://samsung.com/tv/metadata/use.voiceguide" value="false"/>
     
-    <name>AppleUi</name>
+    <name>KSTP 5 Minneapolis-St. Paul, MN</name>
     <preference name="*" value="" readonly="true"/>
     <tizen:privilege name="http://tizen.org/privilege/account.write"/>
     <tizen:privilege name="http://tizen.org/privilege/account.read"/>

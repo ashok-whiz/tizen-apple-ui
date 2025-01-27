@@ -17,15 +17,15 @@ function openMiniVideoDialog(stream_url, asset_key, video_group, cid, itid) {
   video.setAttribute("id", "video");
   // video.setAttribute("height", "280");
   // video.setAttribute("width", "500");
-  video.setAttribute("height", "520"); //520/509
-  video.setAttribute("class", "videoClass");
-  video.setAttribute("width", "928"); //924
+  video.setAttribute("height", "auto"); //527,520/509
+  // video.setAttribute("class", "videoClass");
+  video.setAttribute("width", "950"); //930, 924
 
   video.setAttribute("itemid", itid);
   video.setAttribute("mini-player", true);
 
   insertAfter(referenceNode, video);
-
+  video.classList.add("videoClass");
   let skin = document.getElementById("skin");
   skin.classList.remove("video-skin");
   skin.children[0].style.display = "none";
@@ -96,7 +96,7 @@ function openMiniVideoDialog(stream_url, asset_key, video_group, cid, itid) {
 
   videoElement.addEventListener("playing", function () {
     MINI_TIMEOUT_ID = setTimeout(() => {
-      //# maximizePlayer();
+      maximizePlayer();
     }, 15000);
   });
 

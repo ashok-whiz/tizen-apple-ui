@@ -1,4 +1,4 @@
-var LOCATION = "10 News Now - WSLS 10";
+var LOCATION = "KSTP 5 Minneapolis-St. Paul, MN";
 var BRAND = "SamsungTV";
 var APP_VERSION = "1.2.9";
 function generateUUID() {

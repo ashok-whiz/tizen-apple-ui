@@ -92,7 +92,7 @@ try {
 
 const ADMACRO = {
   __APP_BUNDLE__: "LTv5tIjXdW",
-  __APP_NAME__: "10 News Now - WSLS 10".trim(),
+  __APP_NAME__: "KSTP 5 Minneapolis-St. Paul, MN".trim(),
   __DEVICE_ID__: device_id,
   __TIMESTAMP__: "",
   __IP__: ip,

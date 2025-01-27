@@ -18,7 +18,7 @@ function registerKeyHandler() {
     tizen.tvinputdevice.registerKey("MediaRewind");
     tizen.tvinputdevice.registerKey("MediaFastForward");
     tizen.tvinputdevice.registerKey("Exit");
-
+    if (popupVisibilitybyId("weatherPage")) return;
     switch (e.keyCode) {
       case 37: //LEFT arrow
         // bof weather & miniplayer focus
@@ -43,7 +43,7 @@ function registerKeyHandler() {
         MINI_TIMEOUT_ID = setTimeout(() => {
           maximizePlayer();
         }, 15000);
-        if (popupVisibilitybyId("weatherPage")) return;
+
         if (popupVisibilitybyId("spinner")) return;
         if (popupVisibilitybyId("notificationPopup")) return; //prevent action when exit popup open.
         if (popupVisibilitybyId("videoPopup")) {
@@ -51,8 +51,6 @@ function registerKeyHandler() {
           videoLeftArrow(); // left controll navigation.
         }
         if (!checkMaxPlayer()) return; //prvevent movement of main page while playing max video.
-        // if ( miniVideo()) return;
-        //###if (popupVisibilitybyId("videoPopup")) return; // prevent action on homepage.
 
         if (POPUP) {
           let okf = document.getElementById("popup-ok");
@@ -98,7 +96,6 @@ function registerKeyHandler() {
         break;
 
       case 38: //UP arrow
-        if (popupVisibilitybyId("weatherPage")) return;
         if (popupVisibilitybyId("mediaError")) {
           removeMediaError();
         }
@@ -115,7 +112,6 @@ function registerKeyHandler() {
         //#### if (popupVisibilitybyId("videoPopup")) return; // prevent action on homepage.
         exitPopupUpKey(); // Exit popup nav.
         const upNav = document.getElementById("pagelist");
-
         const childCcount = upNav.children;
         let upcounter = ctr.counter;
 
@@ -123,9 +119,23 @@ function registerKeyHandler() {
           for (let j = 0; j < upNav.children[i].children.length; j++) {
             if (upNav.children[i].children[j].className === "item focused") {
               upcounter = i;
-
               //weather icon focus
               if (upcounter === 0) {
+                // remove focus of first item of pagelist
+                const firstItme = document.getElementById("pagelist");
+                const firstItmeCount = firstItme.children[0].childElementCount;
+                for (let i = 0; i < firstItmeCount; i++) {
+                  if (
+                    firstItme.children[0].children[i].classList.contains(
+                      "focused",
+                    )
+                  ) {
+                    firstItme.children[0].children[i].classList.remove(
+                      "focused",
+                    );
+                  }
+                }
+
                 const weatherIcon = document
                   .getElementById("weather-icon")
                   .classList.add("focused");
@@ -149,16 +159,20 @@ function registerKeyHandler() {
             }
 
             upcounter--;
+
             ctr.counter = upcounter;
+
             upNav.children[upcounter].children[1].classList.add("focused");
             upNav.children[upcounter].children[1].scrollIntoView(false);
-            upNav.children[upcounter].children[1].scrollIntoView({
-              block: "start",
-            });
             upNav.children[upcounter].children[1].scrollIntoView({
               behavior: "instant",
               block: "start",
             });
+
+            // upNav.children[upcounter].children[1].scrollIntoView({
+            //   behavior: "instant",
+            //   block: "start",
+            // });
 
             CATEGORYID = upNav.children[upcounter].id;
             userNavigation();
@@ -204,7 +218,6 @@ function registerKeyHandler() {
         }
         // eof weaher & miniplayer focuse
 
-        if (popupVisibilitybyId("weatherPage")) return;
         if (popupVisibilitybyId("mediaError")) {
           removeMediaError();
         }
@@ -272,7 +285,6 @@ function registerKeyHandler() {
         break;
 
       case 40: //DOWN arrow
-        if (popupVisibilitybyId("weatherPage")) return;
         if (popupVisibilitybyId("mediaError")) {
           removeMediaError();
         }
@@ -339,12 +351,13 @@ function registerKeyHandler() {
             dnleftKey.children[dnlcounter].children[1].scrollIntoView(false);
             dnleftKey.children[dnlcounter].children[1].scrollIntoView({
               block: "start",
+              inline: "nearest",
             });
-            dnleftKey.children[dnlcounter].children[1].scrollIntoView({
-              behavior: "instant",
-              block: "start",
-              //inline: "nearest",
-            });
+            // dnleftKey.children[dnlcounter].children[1].scrollIntoView({
+            //   behavior: "smooth",
+            //   block: "start",
+            //   //inline: "center",
+            // });
 
             CATEGORYID = dnleftKey.children[dnlcounter].id;
             ctr.counter = dnlcounter;
@@ -378,7 +391,6 @@ function registerKeyHandler() {
         }
         break;
       case 13: //OK button
-        if (popupVisibilitybyId("weatherPage")) return;
         if (popupVisibilitybyId("spinner")) return;
         if (popupVisibilitybyId("mediaError")) return; //prevent fullscreen wehen error occured in video
         if (popupVisibilitybyId("error")) {
@@ -431,6 +443,7 @@ function registerKeyHandler() {
           if (miniPlayer.classList.contains("focused")) {
             miniPlayer.classList.remove("focused");
             maximizePlayer();
+
             return;
           }
           // maximize miniplayer eof
@@ -505,10 +518,6 @@ function registerKeyHandler() {
           caption = element[0].attributes["caption"].nodeValue;
           let id = element[0].attributes["id"].nodeValue;
 
-          // console.log("OK ----------->", itemid);
-          // const errorItem = sessionStorage.getItem("errorItem");
-          // console.log("itmeid ", itemid, "eroritem", errorItem);
-          // if (errorItem === itemid) return; // prevent if there are error in itme.
           sessionStorage.setItem("itemId", itemid);
 
           const nodes = document.getElementsByTagName("option");
@@ -519,9 +528,6 @@ function registerKeyHandler() {
           localStorage.setItem("cc_lang", "English:0");
 
           if (video_group === "vod") {
-            // document.getElementById("head").src = document.getElementById(
-            //   "thumb" + id,
-            // ).src;
             // Setting thumbnail on left pan of header
             const icon_uri = document.getElementById("thumb" + id).src;
             document.documentElement.style.setProperty(
@@ -539,9 +545,6 @@ function registerKeyHandler() {
               guid,
             );
           } else if (video_group === "live") {
-            // document.getElementById("head").src = document.getElementById(
-            //   "thumb" + id,
-            // ).src;
             // Setting thumbnail on left pan of header
             const icon_uri = document.getElementById("thumb" + id).src;
             document.documentElement.style.setProperty(
@@ -584,12 +587,6 @@ function registerKeyHandler() {
         }
         break;
       case 10009: //RETURN button
-        //weather page
-        if (popupVisibilitybyId("weatherPage")) {
-          closeWeather();
-          videoElement.play();
-        }
-
         if (popupVisibilitybyId("spinner")) return;
         //for mini player bof
 
@@ -602,8 +599,7 @@ function registerKeyHandler() {
               maximizePlayer();
             }, 15000);
           });
-          // focuse weather icon when back by clicking on mini player.
-          //document.getElementById("weather-icon").classList.add("focused");
+
           return;
         }
 
@@ -638,13 +634,14 @@ function registerKeyHandler() {
         if (!VIDEO_PLAYED) {
           POPUP = true;
           openNotificationDialog(
-            "Exit 10 News Now - WSLS 10",
-            "Are you sure that you want to exit 10 News Now - WSLS 10?",
+            "Exit KSTP 5 Minneapolis-St. Paul, MN",
+            "Are you sure that you want to exit KSTP 5 Minneapolis-St. Paul, MN?",
           );
         } else {
         }
 
         if (BACK_BUTTON) return;
+
         VIDEO_PLAYED = false;
         //## closeVideoDialog();
 

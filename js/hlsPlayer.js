@@ -407,9 +407,7 @@ function loadUrl(url) {
   // });
   var error = [];
   hls.on(Hls.Events.ERROR, function (event, data) {
-    //console.log("AUDIO ERRROR DETECTED ", data);
-
-    //document.getElementById("log").textContent = JSON.stringify(data, null, 2);
+    //console.log(" ERRROR  ", data);
 
     const itid = document.getElementsByClassName("item focused")[0].id;
     const plyingNow = document.getElementById("note" + itid);
@@ -960,14 +958,22 @@ function handleBufferStall() {
 }
 
 function handleLiveBufferStall() {
-  console.log("Network reconnected. Attempting to recover live HLS playback.");
-  // Reload the live stream to catch up with the live edge
-  hls.loadSource(hls.url);
-  hls.startLoad();
-  // Seek to live edge
-  const liveEdge = hls.liveSyncPosition;
-  if (liveEdge) {
-    hls.media.currentTime = liveEdge;
+  console.warn("Handling buffer stall...");
+
+  if (hls) {
+    if (hls.media && hls.media.readyState < 2) {
+      console.warn("Attempting to recover media error...");
+      hls.recoverMediaError();
+    }
+
+    const liveEdge = hls.liveSyncPosition;
+    if (liveEdge !== null && !isNaN(liveEdge)) {
+      hls.media.currentTime = liveEdge;
+      console.log("Seeking to live edge:", liveEdge);
+    } else {
+      console.warn("Live sync position unavailable. Restarting playback...");
+      hls.startLoad();
+    }
   }
 }
 

@@ -1,5 +1,4 @@
 function maximizePlayer() {
-  return;
   const subtitleContainer = document.getElementById("subtitleContainer");
   subtitleContainer.innerHTML = "";
 
@@ -9,7 +8,7 @@ function maximizePlayer() {
   const custoDialog = document.getElementById("customDialog");
   custoDialog.classList.remove("video-dialog-mini");
   custoDialog.classList.add("video-dialog");
-
+  video.classList.remove("videoClass");
   video.setAttribute("height", "1080");
   video.setAttribute("width", "100%");
 
@@ -20,6 +19,12 @@ function maximizePlayer() {
   document.getElementById("ctr").style.display = "block";
   document.getElementById("cc").style.display = "block";
   document.getElementById("title").display = "none";
+  ///////////// SETTING FOCUSE ON PLYING ITEM WEHN CLICKED ON MINI PLAYER TO MAXIMIZE IT
+  const itemid = sessionStorage.getItem("itemId");
+  const item = document.getElementById(itemid);
+  item.classList.add("focused");
+
+  ///////////////
 
   return;
 }
@@ -45,9 +50,10 @@ function miniPlayer(cb) {
   let video = document.getElementById("video");
   // video.setAttribute("height", "280");
   // video.setAttribute("width", "500");
-  video.setAttribute("height", "520");
-  video.setAttribute("width", "924");
-  video.setAttribute("class", "videoClass");
+  video.setAttribute("height", "auto"); //527
+  video.setAttribute("width", "950");
+  //video.setAttribute("class", "videoClass");
+  video.classList.add("videoClass");
   video.setAttribute("mini-player", true);
   document.getElementById("ctr").style.display = "none";
   let skin = document.getElementById("skin");

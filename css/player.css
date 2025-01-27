@@ -340,11 +340,11 @@ overflow: hidden;
 #weather-icon{
  
   /* margin-top: -0.56em; */
-  height: 130px;
+  height: 145px;
   margin-top: 85px;
-  margin-left: 1.5em;
+  margin-left: 35px;
   color: #fff;
-  width: 6em;
+  width: 6.8em;
   position:absolute;
   background-color: #424242;
   /* border: 1px solid; */
@@ -414,6 +414,8 @@ video::cue-region {
   font-weight: bolder;
 }
 .videoClass{
+  /* margin-top: 3px; */
   border: 5px solid #545252;
+  height: 535px;
 
 }
