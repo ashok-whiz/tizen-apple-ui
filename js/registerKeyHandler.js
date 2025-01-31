@@ -7,7 +7,7 @@ var HIDEINTERNETERROR;
 var LAST_FOCUSED;
 //var el = document.getElementById("logg");
 
-var CATEGORYID = 2633; //emporary
+//var CATEGORYID = 2633; //emporary
 
 function registerKeyHandler() {
   document.addEventListener("keydown", function (e) {
@@ -88,7 +88,7 @@ function registerKeyHandler() {
                 block: "start",
                 inline: "nearest",
               });
-              userNavigation();
+              //userNavigation(); will use in next version
               break;
             }
           }
@@ -136,9 +136,9 @@ function registerKeyHandler() {
                   }
                 }
 
-                const weatherIcon = document
-                  .getElementById("weather-icon")
-                  .classList.add("focused");
+                const weatherIcon = document.getElementById("weather-icon");
+
+                weatherIcon.classList.add("focused");
                 document.getElementById(
                   "selected-item",
                 ).innerHTML = `<span class="selected-item">Tap for weather details.</span>`;
@@ -175,7 +175,7 @@ function registerKeyHandler() {
             // });
 
             CATEGORYID = upNav.children[upcounter].id;
-            userNavigation();
+            //userNavigation(); will use in next version
             //analytics bof
             const analyticsData = {
               event: "SectionViewed",
@@ -210,7 +210,7 @@ function registerKeyHandler() {
           video.classList.add("focused");
           document.getElementById(
             "selected-item",
-          ).innerHTML = `<span class="selected-item">Tap the mini playere for fullscreen view.</span>`;
+          ).innerHTML = `<span class="selected-item">Tap the mini player for fullscreen view.</span>`;
         }
         const minip = document.getElementById("video");
         if (minip.className === "focused") {
@@ -277,7 +277,7 @@ function registerKeyHandler() {
                 inline: "nearest",
               });
               //console.log(arrowKey.children[right_counter]);
-              userNavigation();
+              //userNavigation(); will use in next version
               break;
             }
           }
@@ -310,6 +310,7 @@ function registerKeyHandler() {
 
         let dnleftKey = document.getElementById("pagelist"); //("pagelist");
         let dnlcount = dnleftKey.children;
+
         if (
           document.getElementById("weather-icon").classList.contains("focused")
         ) {
@@ -328,7 +329,6 @@ function registerKeyHandler() {
               dnleftKey.children[i].children[j].className === "item focused"
             ) {
               dnlcounter = i;
-
               break;
             }
           }
@@ -361,7 +361,7 @@ function registerKeyHandler() {
 
             CATEGORYID = dnleftKey.children[dnlcounter].id;
             ctr.counter = dnlcounter;
-            userNavigation();
+            // userNavigation(); will use in next version
             // analytics bof
 
             // const item_category =

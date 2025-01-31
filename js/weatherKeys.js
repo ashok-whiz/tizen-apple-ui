@@ -21,12 +21,13 @@ function weatherKeys() {
     if (!popupVisibilitybyId("weatherPage")) return;
     switch (e.keyCode) {
       case 13:
+        if (BADURL) return; // if bad url prevent any ok action.
         setTimeout(() => {
           weatherPageKeyEvents.fullscreen = true;
         }, 1000);
         // weatherPageKeyEvents.fullscreen = true;
         if (!weatherPageKeyEvents.fullscreen) return;
-        console.log("In Weather key handler");
+
         if (wvideo.classList.contains("weather-video-focused")) {
           fullScreen();
           return;
@@ -43,10 +44,17 @@ function weatherKeys() {
 
       case 37: // Left key
         if (wvideo.classList.contains("full-screen")) return;
-        let leftKey = document.getElementById("hourly-container");
+        let leftElement = document.getElementsByClassName(
+          "hourly-item focused",
+        );
+
+        let leftid = leftElement[0].parentElement.id;
+        //let leftKey = document.getElementById("hourly-container");
+        let leftKey = document.getElementById(leftid);
+
         let lcount = leftKey.children;
         let lcounter = 0;
-        console.log("Total length->", lcount.length);
+
         for (let i = 0; i < lcount.length; i++) {
           if (leftKey.children[i].className === "hourly-item focused") {
             lcounter = i;
@@ -85,6 +93,9 @@ function weatherKeys() {
         if (currentIndex > 0) {
           currentIndex--;
           updateHighlight(currentIndex);
+          // addVideoFocuse();
+        }
+        if (currentIndex === 0) {
           addVideoFocuse();
         }
         break;
@@ -96,7 +107,10 @@ function weatherKeys() {
           clearTimeout(MINI_TIMEOUT_ID);
         }
 
-        const container = document.querySelector("#hourly-container");
+        let element = document.getElementsByClassName("hourly-item focused");
+        let id = element[0].parentElement.id;
+        //const container = document.querySelector("#hourly-container");
+        const container = document.querySelector(`#${id}`);
 
         let count = container.children;
         let right_counter = 0;
@@ -134,6 +148,7 @@ function weatherKeys() {
         break;
       case 40: //DOWN arrow
         //console.log("currI ndex", currentIndex, "item lenght ", items.length);
+
         if (wvideo.classList.contains("full-screen")) return;
         if (currentIndex < items.length - 1) {
           currentIndex++;
@@ -154,7 +169,7 @@ function weatherKeys() {
           video.classList.add("weatherVideo");
           video.classList.add("weather-video-focused");
           //weatherPageKeyEvents.fullscreen = false;
-          throw new Error("Minimized video!");
+          // throw new Error("Minimized video!");
         } else {
           weatherPageKeyEvents.fullscreen = false;
           closeWeather();
@@ -184,7 +199,6 @@ function weatherKeys() {
         break;
 
       case 10252:
-        console.log("code 10252");
         const MediaPlayPause = document.getElementById("play");
         if (videoElement.paused) {
           MediaPlayPause.textContent = "Pause";
@@ -218,8 +232,12 @@ function updateHighlight(index) {
 
     if (idx === 1) {
       const hitem = document.querySelector("#hourly-container");
+      const week = document.querySelector("#weekly");
       for (let i = 0; i < hitem.children.length; i++) {
         hitem.children[i].classList.remove("focused");
+      }
+      for (let j = 0; j < week.children.length; j++) {
+        week.children[j].classList.remove("focused");
       }
     }
     if (item.childElementCount > 0) {
@@ -232,11 +250,13 @@ function updateHighlight(index) {
   if (weather_video.classList.contains("weather-video-focused")) {
     weather_video.classList.remove("weather-video-focused");
   }
+
   if (index !== 0) items[index].children[0].classList.add("focused");
 
   items[index].children[0].scrollIntoView(true);
   items[index].children[0].scrollIntoView({
-    block: "nearest",
+    behavior: "smooth",
+    block: "start",
   });
   // items[index].scrollIntoView({
   //   behavior: "instant",

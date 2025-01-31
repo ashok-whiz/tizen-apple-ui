@@ -31,7 +31,7 @@
 .current-video{
   /* width: 40%; */
   height: 520px;
-  margin-left: 39px;
+  margin-left: 24px; /*39px;*/
 }
   
 .current-pan-condition{
@@ -107,29 +107,38 @@
   margin-top: 30px;
 }
 .current-icon{
-  /* width: 11.25rem; */
-  /* width: 6.25rem;  */
-  width: 60%;
-  height: auto;
+  width: 183px; 
+  height: 183px; 
+  /* width: 30%;
+  height: auto; */
   object-fit: contain;
-
-
+  /* margin-top: 35px; */
  
 }
 .current-icon-top{
   /* width: 100%;
   height: auto; 
   object-fit: contain; */
-  width: 190px;
-  height: 190px;
+  width: 32%;
+  
 
 
  
+}
+.day-icon{
+  text-align: initial;
+  margin-left: 10px;
 }
 
 .current-text{
   text-align: center;
   font-size: 40px;
+
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  overflow: hidden;
 }
 .icondiv{
 display: flex;
@@ -149,7 +158,7 @@ height: auto;
   margin-top: 53px;
   font-size: 3em;
 }
-.hourly-continer{
+.hourly-container{
   display: flex;
   justify-content: flex-start;
   /* gap: 5px; */
@@ -213,14 +222,33 @@ width: 148;
 }
 
 #weekly{
-  display: flex;
+  /* display: flex;
+  width: fit-content;
+  overflow-x: hidden; */
   /* margin-right: 10px; */
+  display: flex;
+  justify-content: flex-start;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 #day-container:last-child {
   margin-right: 0; /* Remove margin for the last item */
 }
 #day-container{
-  width: 270px; /*276*/
+  width: 255px; /*270px; /*276*/
+  height: 330px;
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  /* justify-content: center;
+  justify-items: center; */
+  text-align: center;
+  background-color: #37516b;
+  margin-right: 10px;
+}
+.dayContainer{
+  width: 255px; /*270px; /*276*/
+  height: 330px;
   display: flex;
   text-align: center;
   flex-direction: column;
@@ -231,7 +259,9 @@ width: 148;
   margin-right: 10px;
 }
 .dayfont{
-  font-size: 2.5em;
+  
+  font-size: 40px;
+  /* width: 240px; */
 }
 .hrline{
   width: 80%;
@@ -244,23 +274,20 @@ width: 148;
   margin-top: 5px;
 }
 .heightemp{
-  font-size: 2em;
-  color: red;
+  font-size: 35px;
+  color: #F84B20;
   text-align: right;
   padding: 17px;
 }
 .lowtemp{
-  
-    font-size: 2em;
-    
-    text-align: right;
-    padding: 17px;
-  
-}
+   font-size: 35px;
+   text-align: right;
+   margin-right: 15px;
+ }
 
 
 .weatherVideo{
-  /* width: 924px; */
+  width: 928px;
   /* width: 978px; */
   height: 522px; /*535px;*/
   /* width: 100%; */
@@ -269,19 +296,20 @@ width: 148;
 
 /* NEW CSS FOR NEW DESIGN BOF */
 .hourly-item {
-  /* width: 237px; */
+  width: 240px; /*207px;*/
+  height: 330px;
   /* width: 240px; */
   background-color: #37516b;
   font-size: 30px;
   color: #fff;
   text-align: center;
-  height: 420px;
+  /* height: 420px; */
   padding: 7px;
   /* margin: 5px; */
   margin-right: 10px;
 }
 .current-icon-top-new {
-  width: 70%;
+  width: 32%; /*60%;*/
   height: auto;
 }
 .current_text {
@@ -289,19 +317,23 @@ width: 148;
 }
 .pan {
   width: 243px;
+  font-size: 35px;
   /* background-color: aqua; */
 }
 .pan_child {
   float: left;
-  margin-right: 75px;
+  margin-right: 32px; /*75px;*/
   margin-left: 7px;
-  color: red;
+  color: #F84B20;
 }
 .wind {
-  height: 74px;
+  /* height: 74px; */
+  font-size: 35px;
+  margin-top: 15px;
 }
 .time {
   height: 65px;
+  font-size: 35px;
 }
 
 /* NEW CSS EOF */
@@ -329,4 +361,18 @@ width: 148;
   border: 4px solid;
   background-color: #000000;
 
+}
+
+.h-wind{
+  font-size: 23px;
+  margin-top: 15px;
+}
+.WeathervideoError{
+  color: #fbfbfb;
+  display: block;
+  margin-top: -351px;
+  margin-left: 166px;
+  /* background-color: black; */
+  font-size: 5em;
+  font-weight: bolder;
 }

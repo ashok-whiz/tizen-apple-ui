@@ -189,7 +189,7 @@
 
           <div id="pop-message" class="popup-message"></div>
         </div>
-        <div>
+        <div class="goback">
           <button
             id="popup-cancel"
             tabindex="-1"
@@ -411,14 +411,21 @@
             <div id="current-condition-container"></div>
           </div>
           <div class="current-video">
-            <video id="weather-video" class="weatherVideo"></video>
+            <!-- <video id="weather-video" class="weatherVideo"></video> -->
+            <video id="weather-video" class="weatherVideo">
+              <source id="videoSource" src="" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            <p id="errorMessage" class="WeathervideoError">
+              <!-- The video failed to load or play. -->
+            </p>
             <div id="weather-video-status" class="weather-video-status"></div>
           </div>
         </div>
-        <div class="hour24heading">Next 24 hours</div>
-        <div class="hourly-continer weatheritem" id="hourly-container"></div>
-        <div class="hour24heading">7 days forecast</div>
-        <div id="weekly" class="weatheritem-x"></div>
+        <div class="hour24heading" id="hours24"></div>
+        <div class="hourly-container weatheritem" id="hourly-container"></div>
+        <div class="hour24heading" id="days"></div>
+        <div id="weekly" class="weatheritem"></div>
       </div>
     </div>
 

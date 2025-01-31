@@ -26,10 +26,12 @@ const weatherNminivideoFocuse = (dnleftKey) => {
     const selectedItem = document.getElementById(itemid);
 
     selectedItem.classList.add("focused");
+    document.getElementById("selected-item").innerHTML = "";
     selectedItem.scrollIntoView(true);
     return;
   } else if (miniVideo.classList.contains("focused")) {
     miniVideo.classList.remove("focused");
+    miniVideo.classList.add("videoClass");
     const itemid = dnleftKey.children[0].children[1].id;
     const selectedItem = document.getElementById(itemid);
     selectedItem.classList.add("focused");
@@ -67,9 +69,9 @@ function registerKey() {
           weather.classList.remove("focused");
           const video = document.getElementById("video");
           video.classList.add("focused");
-          document.getElementById(
-            "selected-item",
-          ).innerHTML = `<span class="selected-item">Tap to full screen...</span>`;
+          // document.getElementById(
+          //   "selected-item",
+          // ).innerHTML = `<span class="selected-item">Tap to full screen...</span>`;
         }
 
         break;
@@ -102,3 +104,12 @@ function registerKey() {
     }
   });
 }
+
+// Example: Set a dynamic video URL
+//#const dynamicVideoUrl = 'https://example.com/path/to/your/video.mp4';
+//#setVideoSource(dynamicVideoUrl);
+// playing weather video eof mp4
+
+// Example: Set a dynamic HLS video URL
+// const dynamicHlsUrl = 'https://example.com/path/to/your/playlist.m3u8';
+// setHlsVideoSource(dynamicHlsUrl);

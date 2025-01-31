@@ -139,9 +139,9 @@ hr {
   
   border: 5px solid #fff;
   
-  /* width: 300px;
-  height: 168px; */
-  z-index: 5;
+   /* width: 212px;
+  height: 140px;  */
+  /* z-index: 5; */
 }
 
 .item {
@@ -288,12 +288,9 @@ hr {
 
 .sectionlist {
   
-  margin-top: 40px;
+  /* margin-top: 40px; */
   
-  
-  /* padding-top: 0px; */
-
-  padding-right: 30px;
+  padding-right: 25px; /*30px;*/
   padding-bottom: 25px;
   padding-left: 25px;
   /* height: 300px; */
@@ -319,7 +316,7 @@ hr {
  
   
   /* height: 350px; */
-  height: 536px;
+  height: 585px; /*536*/
 
   /* background-color: rgb(0, 242, 255); */
 }
@@ -404,3 +401,6 @@ hr {
   padding-right: 30px;
 }
 
+.goback{
+  padding: 10px;
+}

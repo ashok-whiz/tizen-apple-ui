@@ -116,6 +116,9 @@ function openVideoDialog(
     const subtitleContainer = document.getElementById("subtitleContainer");
     subtitleContainer.style.display = "none";
     subtitleContainer.innerHTML = "";
+
+    sessionStorage.setItem("cid", cid);
+    console.log("cats ", CATEGORYID, cid);
     initPlayer(stream_url, asset_key, AD_TAG, cid);
 
     VideoPlayed(
@@ -197,6 +200,7 @@ function openVideoDialog(
     subtitleContainer.style.display = "none";
     subtitleContainer.innerHTML = "";
     //initLivePlayer(stream_url, asset_key); //No preroll only DAI
+    sessionStorage.setItem("cid", cid);
     initPlayer(stream_url, asset_key, AD_TAG, cid); // With preroll & DAI Ads
 
     //analytics bof
@@ -359,8 +363,8 @@ function closeVideoDialog() {
   let firstItem = localStorage.getItem("focuseFirstItem");
   if (firstItem === "true") {
     const catId = localStorage.getItem("CAT_ID");
-    const item = document.getElementById(catId);
-    item.children[1].classList.add("focused");
+    // const item = document.getElementById(catId);
+    // item.children[1].classList.add("focused");
     localStorage.setItem("focuseFirstItem", false);
   }
   // displying element properly specially last row after closing video
