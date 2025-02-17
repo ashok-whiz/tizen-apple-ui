@@ -65,6 +65,12 @@ function miniPlayer(cb) {
     videoElement.play();
   }
   let videoTitle = sessionStorage.getItem("video_title");
+  // Remove browsing selector bof
+  const browsingSelector = document.querySelectorAll(".focused");
+  if (browsingSelector[1]) {
+    browsingSelector[1].classList.remove("focused");
+  }
+  // Remove browsing selector eof
   document.getElementById(
     "title",
   ).innerHTML = `<span class="video_title">Currently Playing: ${videoTitle}</span>`;
@@ -72,6 +78,7 @@ function miniPlayer(cb) {
   if (!videoElement.paused) {
     cb();
   }
+
   if (fatalError) {
     mediaError();
   } else {

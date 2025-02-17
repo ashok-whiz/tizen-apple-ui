@@ -71,12 +71,17 @@ async function videoList() {
     CUSTOME_OVERLAY = JSON.parse(categoryid.response.config.custom_overlay_ott);
   }
   if (categoryid.response.config.weather_url !== undefined) {
-    // WEATHER_URL = categoryid.response.config.weather_url;
-    weather(
+    WEATHER_URL =
+      categoryid.response.config.weather_url +
+      "?zip_code=" +
+      categoryid.response.config.zipcode;
+    weatherIcon(
       categoryid.response.config.weather_url +
         "?zip_code=" +
         categoryid.response.config.zipcode,
     );
+  } else {
+    WEATHER_URL = "";
   }
   //console.log("Weather url ", WEATHER_URL);
   //CUSTOME_OVERLAY = JSON.parse(categoryid.response.config.custom_overlay_ott);
@@ -145,7 +150,9 @@ async function videoList() {
           content.category_id,
           content.id,
         ); //paying first video
+        // sessionStorage.setItem("cid", content.category_id);
 
+        //console.log(content);
         //bof analytics for Live
         const analytics = {
           event: "VideoPlayed",
@@ -305,4 +312,40 @@ async function hide_loader() {
 
   let header = document.getElementById("header");
   header.style.display = "block";
+}
+
+async function weatherIcon(url) {
+  url = "https://test.whizti.com/json/weather123.json";
+  // const spinner = document.getElementById("spinner");
+  // spinner.removeAttribute("hidden");
+  //console.log(url);
+
+  if (url === undefined) return;
+  const city = document.querySelector("#city");
+  const icon = document.querySelector("#wicon");
+  const temp = document.querySelector("#temp");
+
+  try {
+    const response = await getData(url, {
+      timeout: 30000,
+    });
+    const IconweatherData = await response.json();
+    //return data;
+
+    city.textContent = IconweatherData.CurrentCondition.City;
+    temp.innerHTML = `${IconweatherData.CurrentCondition.Temperature}&deg;`;
+    icon.innerHTML = `<span ><img src="${IconweatherData.CurrentCondition.WeatherIconURL}"class="weather-icon" /> 
+    </span>`;
+
+    //WeatherIconURL
+    //Temperature
+  } catch (error) {
+    // Timeouts if the request takes
+    // longer than 30 seconds
+    SERVER_ERROR = true;
+    console.log(error.name === "AbortError");
+    console.log("ERROR : ", error);
+    openErrorNotification("Error", "An error occured");
+    //  spinner.setAttribute("hidden", "");
+  }
 }

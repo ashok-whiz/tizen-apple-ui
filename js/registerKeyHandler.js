@@ -23,7 +23,9 @@ function registerKeyHandler() {
       case 37: //LEFT arrow
         // bof weather & miniplayer focus
         const miniv = document.getElementById("video");
-        if (miniv.className === "focused") {
+        const Mini = miniv.getAttribute("mini-player");
+
+        if (miniv.className === "focused" && Mini !== "false") {
           const weather = document.getElementById("weather-icon");
           miniv.classList.remove("focused");
           miniv.classList.add("videoClass");
@@ -203,9 +205,11 @@ function registerKeyHandler() {
       case 39: //RIGHT arrow
         // bof weather & miniplayer focuse
         const weather = document.getElementById("weather-icon");
-        if (weather.className === "focused") {
+        const video = document.getElementById("video");
+        const Minip = video.getAttribute("mini-player");
+        if (weather.className === "focused" && Minip !== "false") {
           weather.classList.remove("focused");
-          const video = document.getElementById("video");
+          // const video = document.getElementById("video");
           video.classList.remove("videoClass");
           video.classList.add("focused");
           document.getElementById(
@@ -246,7 +250,6 @@ function registerKeyHandler() {
           ok.classList.add("popup-focused");
         } else {
           let arrowKey = document.getElementById(CATEGORYID);
-
           let count = arrowKey.children;
           let right_counter = 0;
 
@@ -315,8 +318,8 @@ function registerKeyHandler() {
           document.getElementById("weather-icon").classList.contains("focused")
         ) {
           dnlcount++; // Increase counter by 1 if weather icon had focused.
+          CATEGORYID = localStorage.getItem("CAT_ID");
         }
-
         let dnlcounter = ctr.counter;
 
         // weather icon or video selection bof

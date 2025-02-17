@@ -113,3 +113,30 @@ function registerKey() {
 // Example: Set a dynamic HLS video URL
 // const dynamicHlsUrl = 'https://example.com/path/to/your/playlist.m3u8';
 // setHlsVideoSource(dynamicHlsUrl);
+function downloadAndSaveImage(imageUrl, fileName) {
+  console.log("in download functino", imageUrl);
+  fetch(imageUrl)
+    .then((response) => response.blob())
+    .then((blob) => {
+      tizen.filesystem.resolve(
+        "images",
+        (dir) => {
+          let file = dir.createFile(fileName);
+          if (file) {
+            file.openStream(
+              "w",
+              (fs) => {
+                fs.write(blob);
+                fs.close();
+                console.log("Image saved successfully!");
+              },
+              (e) => console.error("Error writing file:", e),
+            );
+          }
+        },
+        (error) => console.error("File system error:", error),
+        "rw",
+      );
+    })
+    .catch((error) => console.error("Download failed:", error));
+}

@@ -26,8 +26,12 @@ var hls = new Hls({
   enableWebVTT: true,
   enableIMSC1: true,
   enableSid: true,
+  // lowLatencyMode: false,
+  // maxBufferLength: 30,
+  // maxMaxBufferLength: 60,
+  // liveDurationInfinity: true,
 });
-
+//hls.config.maxBufferLength = 30;
 // Ad UI element
 let adUiElement;
 
@@ -379,7 +383,7 @@ function loadUrl(url) {
     //console.log("SWITICHED ", data.id);
   });
   hls.on(Hls.Events.FRAG_LOADING, function (event, data) {
-    //console.log("Frag Loading:", data.frag.url);
+    // console.log("Frag Loading:", data.frag.url);
     // You can log the current frag URL or check for download progress here
   });
   hls.on(Hls.Events.FRAG_LOADED, function (event, data) {
@@ -388,6 +392,7 @@ function loadUrl(url) {
   });
   hls.on(Hls.Events.SUBTITLE_FRAG_PROCESSED, function (event, data) {
     // console.log("FRAG PROCESSED ", data);
+    // document.getElementById("log").textContent = JSON.stringify(data);
     //console.log("CC URL  ", data.frag._url);
     /* ADDING SUBTITLE (VTT) TRACK TO VIDEO ELEMNET */
   });
@@ -409,6 +414,10 @@ function loadUrl(url) {
   hls.on(Hls.Events.ERROR, function (event, data) {
     //console.log(" ERRROR  ", data);
 
+    if (data.type === "otherError") {
+      // hls.loadSource(hls.url);
+      hls.startLoad();
+    }
     const itid = document.getElementsByClassName("item focused")[0].id;
     const plyingNow = document.getElementById("note" + itid);
 
@@ -445,8 +454,15 @@ function loadUrl(url) {
     }
 
     if (data.fatal) {
+      // if (data.type === "otherError") {
+      //   hls.startLoad();
+      // }
+
       // switch (data.type) {
       switch (data.details) {
+        case hls.ErrorTypes.OTHER_ERROR:
+          hls.startLoad();
+          break;
         case Hls.ErrorTypes.MEDIA_ERROR:
           console.log("Media error.");
           fatalError = true;
@@ -1007,10 +1023,14 @@ function attemptSyncToLiveEdge() {
     const liveEdge = hls.liveSyncPosition;
     if (liveEdge) {
       //  console.log("Live edge found, syncing playback...");
+      document.getElementById("log").textContent =
+        "Live edge found, syncing playback...";
       hls.media.currentTime = liveEdge;
       clearInterval(syncInterval);
     } else {
       // console.log("Live edge not yet available, waiting...");
+      document.getElementById("log").textContent =
+        "Live edge not yet available, waiting...";
     }
   }, 1000); // Check every second until the live edge is available
 }

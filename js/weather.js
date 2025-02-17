@@ -4,30 +4,18 @@ var weatherPageKeyEvents = {
   fullscreen: false,
 };
 var BADURL = false;
-async function weather(url) {
-  //url = "https://test.whizti.com/json/weather123.json";
-  // const spinner = document.getElementById("spinner");
-  // spinner.removeAttribute("hidden");
-  //console.log(url);
-  if (url === undefined) return;
-  const city = document.querySelector("#city");
-  const icon = document.querySelector("#wicon");
-  const temp = document.querySelector("#temp");
+var hlsWeather;
 
+async function openWeather() {
+  WEATHER_URL = "https://test.whizti.com/json/weather123.json";
+  if (WEATHER_URL === undefined) return;
+  const status = document.getElementById("weather-video-status");
+  status.style.display = "none";
   try {
-    const response = await getData(url, {
+    const response = await getData(WEATHER_URL, {
       timeout: 30000,
     });
     weatherData = await response.json();
-    //return data;
-
-    city.textContent = weatherData.CurrentCondition.City;
-    temp.innerHTML = `${weatherData.CurrentCondition.Temperature}&deg;`;
-    icon.innerHTML = `<span ><img src="${weatherData.CurrentCondition.WeatherIconURL}"class="weather-icon" /> 
-    </span>`;
-
-    //WeatherIconURL
-    //Temperature
   } catch (error) {
     // Timeouts if the request takes
     // longer than 30 seconds
@@ -35,11 +23,8 @@ async function weather(url) {
     console.log(error.name === "AbortError");
     console.log("ERROR : ", error);
     openErrorNotification("Error", "An error occured");
-    //  spinner.setAttribute("hidden", "");
   }
-}
 
-function openWeather() {
   const weatherIcon = document.getElementById("weather-icon");
   if (weatherIcon.classList.contains("focused"))
     weatherIcon.classList.remove("focused");
@@ -117,7 +102,8 @@ function openWeather() {
     halfCurrentConditons += "- ";
   }
   if (weatherData.CurrentCondition.WindSpeedMiles) {
-    halfCurrentConditons += weatherData.CurrentCondition.WindSpeedMiles + "mph";
+    halfCurrentConditons +=
+      weatherData.CurrentCondition.WindSpeedMiles + " mph";
   } else {
     halfCurrentConditons += "-";
   }
@@ -234,16 +220,20 @@ function openWeather() {
   //video
 
   const ext = weatherData.StationForecast.VideoForecastUrl.split(".").pop();
-  var video = document.getElementById("weather-video");
-
-  if (ext == "mp4") {
+  //var video = document.getElementById("weather-video");
+  console.log("Extenstion ", ext);
+  if (ext === "mp4") {
     let mp4 = weatherData.StationForecast.VideoForecastUrl;
     let poster = weatherData.StationForecast.VideoForecastThumbnailUrl;
+    //document.getElementById("weather-video").src = mp4;
+    console.log("mp4 Video ...");
     setVideoSource(mp4, poster);
   } else if (ext === "m3u8") {
+    console.log("hls video ....");
     var videoSrcHls = weatherData.StationForecast.VideoForecastUrl;
     setHlsVideoSource(videoSrcHls);
   } else {
+    console.log("No video ....");
     const noVideo = document.getElementById("weather-video");
     noVideo.style.width = "924";
   }
@@ -259,7 +249,10 @@ function openWeather() {
 
     hourly += '<div class="time">';
     if (element.Hour_Display) {
-      hourly += element.Hour_Display;
+      let timeN = extractString(element.Hour_Display, "num");
+      let time = extractString(element.Hour_Display, "str");
+
+      hourly += `<span class="timeNum">${timeN} </span> <span class="timeampm"> ${time}</span>`; //element.Hour_Display;
     } else {
       hourly += "-";
     }
@@ -288,7 +281,7 @@ function openWeather() {
     hourly += '<div class="pan">';
     hourly += '<div class="pan_child">';
     if (element.Temperature) {
-      hourly += element.Temperature + "&#8457;";
+      hourly += `<span>${element.Temperature}&deg;</span><span class="f"> F</span>`;
     } else {
       hourly += "-";
     }
@@ -310,7 +303,7 @@ function openWeather() {
     }
 
     if (element.WindSpeed) {
-      hourly += " " + element.WindSpeed + "mph";
+      hourly += " " + element.WindSpeed + " mph";
     } else {
       hourly += "-";
     }
@@ -332,7 +325,7 @@ function openWeather() {
     weekly += '<div class="hrline"></div>';
     weekly += '<div class="heightemp">';
     if (day.TempMaxF) {
-      weekly += day.TempMaxF + "&#8457;";
+      weekly += `<span>${day.TempMaxF}&deg;</span><span class="f"> F</span>`;
     } else {
       weekly += "-";
     }
@@ -352,7 +345,7 @@ function openWeather() {
 
     weekly += '<div class="lowtemp">';
     if (day.TempMinF) {
-      weekly += day.TempMinF + "&#8457;";
+      weekly += `<span>${day.TempMinF}&deg;</span><span class="f"> F</span>`;
     } else {
       weekly += "-";
     }
@@ -372,22 +365,70 @@ function openWeather() {
     weekdays.innerHTML += weekly;
   });
 }
+
 function closeWeather() {
   CATEGORYID = sessionStorage.getItem("cid");
   const weatherPage = document.getElementById("weatherPage");
   var weatherVideo = document.getElementById("weather-video");
   weatherVideo.pause();
+  if (hlsWeather) {
+    hlsWeather.destroy(); // Clean up previous Hls instance
+  }
 
   removeFocus();
   weatherPage.style.display = "none";
+  weatherData = "";
+  /*
   const itemid = sessionStorage.getItem("itemId");
   const playingItem = document.getElementById(itemid);
   playingItem.classList.add("focused");
-  //CATEGORYID = sessionStorage.getItem("cid");
+
   playingItem.scrollIntoView(true);
   playingItem.scrollIntoView({
     block: "start",
   });
+  */
+  /////////////////
+  /*
+  const itemId = sessionStorage.getItem("itemId");
+  const playedVideo = document.getElementById(itemId);
+  console.log(playedVideo.getAttribute("videourl"));
+  const played = {
+    url: playedVideo.getAttribute("videourl"),
+    catid: playedVideo.getAttribute("catid"),
+    video_title: playedVideo.getAttribute("video_title"),
+    guid: playedVideo.getAttribute("guid"),
+    video_group: playedVideo.getAttribute("video_group"),
+    daiassetkey: playedVideo.getAttribute("daiassetkey"),
+    itemid: itemId,
+  };
+  miniVideo(
+    played.url,
+    played.daiassetkey,
+    played.video_group,
+    played.catid,
+    played.itemid,
+  );
+  */
+  ///////////////////
+
+  videoElement.play();
+  if (MINI_TIMEOUT_ID) clearTimeout(MINI_TIMEOUT_ID);
+
+  miniPlayer(() => {
+    MINI_TIMEOUT_ID = setTimeout(() => {
+      maximizePlayer();
+    }, 15000);
+  });
+
+  const itemid = sessionStorage.getItem("itemId");
+  const playingItem = document.getElementById(itemid);
+  if (playingItem.classList.contains("focused")) {
+    playingItem.classList.remove("focused");
+  }
+
+  const weaherIcon = document.getElementById("weather-icon");
+  weaherIcon.classList.add("focused");
 }
 
 function removeFocus() {
@@ -428,34 +469,32 @@ function miniWeatherVideo() {
     // throw new Error("Minimized video!");
   } else {
     closeWeather();
-    videoElement.play();
+    //##videoElement.play();
   }
 }
 
 // Playing weather video bof mp4
 // Function to set the video source dynamically
-function setVideoSource(videoUrl, poster = "") {
-  const videoElement = document.getElementById("weather-video");
+async function setVideoSource(videoUrl, poster = "") {
+  const weathervideoElement = document.getElementById("weather-video");
   const sourceElement = document.getElementById("videoSource");
   const errorMessageElement = document.getElementById("errorMessage");
-
+  console.log("URL ", videoUrl);
   // Reset error message
   errorMessageElement.style.display = "none";
-
   // Set the new video source
-
   sourceElement.src = videoUrl;
 
-  videoElement.setAttribute("autoplay", "autoplay");
-  videoElement.classList.add("weather-video-focused");
-  videoElement.setAttribute("poster", poster);
+  weathervideoElement.setAttribute("autoplay", "autoplay");
+  weathervideoElement.classList.add("weather-video-focused");
+  weathervideoElement.setAttribute("poster", poster);
 
   // check video url validity
   checkUrl(videoUrl);
-  videoElement.load(); // Load the new source
 
+  weathervideoElement.load(); // Load the new source
   // Add event listeners for error handling
-  videoElement.addEventListener("error", handleVideoError);
+  weathervideoElement.addEventListener("error", handleVideoError);
   //videoElement.addEventListener("stalled", handleVideoError);
   // videoElement.addEventListener("abort", handleVideoError);
 }
@@ -471,20 +510,25 @@ async function checkUrl(url) {
     }
   } catch (error) {
     console.error(error.message);
+    const errorMessageElement = document.getElementById("errorMessage");
+    errorMessageElement.textContent = "The video failed to load or play.";
+    errorMessageElement.style.display = "block";
+    BADURL = true;
   }
 }
 
 // Function to handle video errors
 function handleVideoError() {
   console.log("Error happend!");
-  const videoElement = document.getElementById("weather-video");
+  // const videoElement = document.getElementById("weather-video");
   const errorMessageElement = document.getElementById("errorMessage");
 
   // Display error message
   errorMessageElement.style.display = "block";
 
   // Log the error (optional)
-  console.error("Video failed to load or play:", videoElement.error);
+  //console.error("Video failed to load or play:", videoElement.error);
+  console.error("Video failed to load or play:");
 }
 
 ///////// HLS VIDEO BOF
@@ -498,10 +542,10 @@ function setHlsVideoSource(videoUrl) {
   errorMessageElement.style.display = "none";
 
   if (Hls.isSupported()) {
-    // if (hls) {
-    //   hls.destroy(); // Clean up previous Hls instance
-    // }
-    hls = new Hls();
+    if (hlsWeather) {
+      hlsWeather.destroy(); // Clean up previous Hls instance
+    }
+    hlsWeather = new Hls();
 
     // Attach Hls.js to the video element
     weathervideoElement.setAttribute("autoplay", "autoplay");
@@ -509,8 +553,8 @@ function setHlsVideoSource(videoUrl) {
     if (weathervideoElement.pause()) {
       weathervideoElement.play();
     } else {
-      hls.loadSource(videoUrl);
-      hls.attachMedia(weathervideoElement);
+      hlsWeather.loadSource(videoUrl);
+      hlsWeather.attachMedia(weathervideoElement);
     }
 
     // Handle HLS errors
@@ -543,5 +587,19 @@ function handleHlsError(data) {
     }
 
     errorMessageElement.style.display = "block";
+  }
+}
+
+function extractString(text, arg = "str") {
+  if (arg === "str") {
+    return text
+      .split("")
+      .filter((char) => isNaN(char))
+      .join("");
+  } else if (arg === "num") {
+    return text
+      .split("")
+      .filter((char) => !isNaN(char))
+      .join("");
   }
 }

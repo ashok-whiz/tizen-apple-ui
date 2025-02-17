@@ -340,7 +340,7 @@ overflow: hidden;
 #weather-icon{
  
   /* margin-top: -0.56em; */
-  height: 145px;
+  height: 160px; /*145px;*/
   
   margin-top: 85px;
   margin-left: 35px;

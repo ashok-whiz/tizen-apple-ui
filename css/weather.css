@@ -35,8 +35,9 @@
 }
   
 .current-pan-condition{
-  /* width: 47%; */
-  height: 563px;
+  
+  /* height: 563px; */
+  height: 536px;
   display: flex;
   /* justify-content: center; */
 }
@@ -90,7 +91,8 @@
 }
 .sunrise-box{
   width: 175px; /*182*/
-  font-size: 1.2em;
+  font-size: 1.3em; /*1.2em*/
+  font-weight: bolder;
   text-align: center;
 }
 
@@ -116,14 +118,8 @@
  
 }
 .current-icon-top{
-  /* width: 100%;
-  height: auto; 
-  object-fit: contain; */
-  width: 32%;
-  
-
-
- 
+  /* width: 32%; */
+  width: 36%;
 }
 .day-icon{
   text-align: initial;
@@ -155,7 +151,7 @@ height: auto;
 }
 .hour24heading{
   height: 85px;
-  margin-top: 53px;
+  margin-top: 55px;
   font-size: 3em;
 }
 .hourly-container{
@@ -297,8 +293,8 @@ width: 148;
 /* NEW CSS FOR NEW DESIGN BOF */
 .hourly-item {
   width: 240px; /*207px;*/
-  height: 330px;
-  /* width: 240px; */
+  /* height: 330px; */
+  height: 340px;
   background-color: #37516b;
   font-size: 30px;
   color: #fff;
@@ -309,11 +305,16 @@ width: 148;
   margin-right: 10px;
 }
 .current-icon-top-new {
-  width: 32%; /*60%;*/
+  width: 36%; /*60%;*/
   height: auto;
 }
 .current_text {
   height: 70px;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-align: center;
+  overflow: hidden;
 }
 .pan {
   width: 243px;
@@ -322,9 +323,13 @@ width: 148;
 }
 .pan_child {
   float: left;
-  margin-right: 32px; /*75px;*/
+  margin-right: 45px; /*32px;*/
   margin-left: 7px;
   color: #F84B20;
+  font-size: 35px;
+}
+.f{
+  font-size: 27px;
 }
 .wind {
   /* height: 74px; */
@@ -333,7 +338,13 @@ width: 148;
 }
 .time {
   height: 65px;
-  font-size: 35px;
+  /* font-size: 35px; */
+}
+.timeampm{
+  font-size: 27px;
+}
+.timeNum{
+  font-size:40px;
 }
 
 /* NEW CSS EOF */
@@ -341,6 +352,10 @@ width: 148;
 .weather-video-focused {
    border: 5px solid #fff;
    z-index: 5;
+}
+.miniFocuse {
+  border: 5px solid #fff;
+  z-index: 5;
 }
 .full-screen{
  top: 0px;
@@ -352,8 +367,10 @@ width: 148;
 .weather-video-status{
   display: none;
   position: absolute;
-  top:50%;
-  left:50%;
+  /* top:50%;
+  left:50%; */
+  top:32%;
+  left:70%;
   color: #fff;
   font-size: 4em;
   font-weight: bold;

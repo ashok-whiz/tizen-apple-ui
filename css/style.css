@@ -22,7 +22,7 @@ hr {
 */
 
 .bgimage {
-  background-image: url("../images/Splash_Screen1920x1080.png");
+  background-image: url("../images/Splash_Screen1920x1080.webp");
   
   background-repeat: no-repeat;
   background-size: cover;
@@ -106,8 +106,8 @@ hr {
         top: 33px;
         left: 29px; */
         width: 960px;/*929px;*/
-        height: 541px; /*523px; /*520px;*/
-        background-image: url('../css/OTT_shadow-2.png'), var(--bg-image);
+        height: 544px; /*541px; /*520px;*/
+        background-image: url('../css/OTT_shadow.png'), var(--bg-image);
         background-size: cover;
         background-position: center;
         background-blend-mode: multiply; /* Blend effect */
@@ -389,6 +389,7 @@ hr {
 
 .wicon{
   vertical-align: middle;
+  /* margin-top: -5px; */
 }
 
 

@@ -20,27 +20,10 @@ function weatherKeys() {
     const status = document.getElementById("weather-video-status");
     if (!popupVisibilitybyId("weatherPage")) return;
     switch (e.keyCode) {
-      case 13:
-        if (BADURL) return; // if bad url prevent any ok action.
-        setTimeout(() => {
-          weatherPageKeyEvents.fullscreen = true;
-        }, 1000);
-        // weatherPageKeyEvents.fullscreen = true;
-        if (!weatherPageKeyEvents.fullscreen) return;
+      // case 13:
+      //   if (BADURL) return; // if bad url prevent any ok action.
 
-        if (wvideo.classList.contains("weather-video-focused")) {
-          fullScreen();
-          return;
-        }
-        if (wvideo.classList.contains("full-screen") && wvideo.paused) {
-          status.style.display = "none";
-          wvideo.play();
-        } else {
-          status.style.display = "block";
-          status.textContent = "Play";
-          wvideo.pause();
-        }
-        break;
+      //   break;
 
       case 37: // Left key
         if (wvideo.classList.contains("full-screen")) return;
@@ -158,6 +141,7 @@ function weatherKeys() {
         break;
 
       case 10009: //back button
+        /*
         if (
           popupVisibilitybyId("weatherPage") &&
           document
@@ -168,12 +152,15 @@ function weatherKeys() {
           video.classList.remove("full-screen");
           video.classList.add("weatherVideo");
           video.classList.add("weather-video-focused");
-          //weatherPageKeyEvents.fullscreen = false;
-          // throw new Error("Minimized video!");
         } else {
           weatherPageKeyEvents.fullscreen = false;
+
           closeWeather();
-          videoElement.play();
+          //videoElement.play();
+        }
+          */
+        if (popupVisibilitybyId("weatherPage")) {
+          closeWeather();
         }
         break;
 
@@ -198,22 +185,18 @@ function weatherKeys() {
         status.style.display = "block";
         break;
 
-      case 10252:
-        const MediaPlayPause = document.getElementById("play");
-        if (videoElement.paused) {
-          MediaPlayPause.textContent = "Pause";
-          videoElement.play();
-        } else {
-          MediaPlayPause.textContent = "Play";
-          videoElement.pause();
-        }
-        var skn = document.getElementById("skin");
-        skn.style.display = "block";
-        videoElement.addEventListener("timeupdate", updateProgress);
-        setTimeout(() => {
-          skn.style.display = "none";
-        }, 5000);
-        break;
+      // case 10252:
+      //   if (wvideo.paused) {
+      //     wvideo.play();
+      //     status.textContent = "";
+      //     status.style.display = "none";
+      //   } else {
+      //     wvideo.pause();
+      //     status.textContent = "Play";
+      //     status.style.display = "block";
+      //   }
+
+      //   break;
 
       default:
         console.log("Key code : " + e.keyCode);
@@ -249,6 +232,7 @@ function updateHighlight(index) {
   const weather_video = document.getElementById("weather-video");
   if (weather_video.classList.contains("weather-video-focused")) {
     weather_video.classList.remove("weather-video-focused");
+    weather_video.classList.add("miniFocuse");
   }
 
   if (index !== 0) items[index].children[0].classList.add("focused");
@@ -268,6 +252,7 @@ function updateHighlight(index) {
 function addVideoFocuse() {
   const weather_video = document.getElementById("weather-video");
   if (!weather_video.classList.contains("weather-video-focused")) {
+    weather_video.classList.remove("miniFocuse");
     weather_video.classList.add("weather-video-focused");
   }
 }
