@@ -7,7 +7,7 @@ var BADURL = false;
 var hlsWeather;
 
 async function openWeather() {
-  WEATHER_URL = "https://test.whizti.com/json/weather123.json";
+  //WEATHER_URL = "https://test.whizti.com/json/weather123.json";
   if (WEATHER_URL === undefined) return;
   const status = document.getElementById("weather-video-status");
   status.style.display = "none";
@@ -177,7 +177,7 @@ async function openWeather() {
               </div>
 
               <div class="current-box">
-              <div class="icondiv"><img class="current-icon-xx" src="${weatherData.CurrentCondition.WeatherIconURL}"/></div>
+              <div class="icondiv"><img class="current-icon" src="${weatherData.CurrentCondition.WeatherIconURL}"/></div>
               <div class="current-text">Feels like ${weatherData.CurrentCondition.RealFeelTemperature}&#8457;</div>
               </div>
 
@@ -479,7 +479,7 @@ async function setVideoSource(videoUrl, poster = "") {
   const weathervideoElement = document.getElementById("weather-video");
   const sourceElement = document.getElementById("videoSource");
   const errorMessageElement = document.getElementById("errorMessage");
-  console.log("URL ", videoUrl);
+
   // Reset error message
   errorMessageElement.style.display = "none";
   // Set the new video source

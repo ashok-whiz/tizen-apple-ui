@@ -677,10 +677,7 @@ function getSetting() {
 
       fontFamilyEl.style.backgroundColor = "lime ";
       fontFamilyEl.style.color = "black";
-    } catch (error) {
-      //    log = document.getElementById("log");
-      // log.innerHTML += `<div class="log"> Error : ${error} </div>`;
-    }
+    } catch (error) {}
   }
 
   if (localStorage.getItem("fontsize")) {

@@ -19,9 +19,11 @@ function openVideoDialog(
   try {
     ADMACRO.__TIMESTAMP__ = Date.now();
     stream_url = stream_url.replace(
-      "__APP_NAME__",
-      `${encodeURI(ADMACRO.__APP_NAME__)}`,
+      /__(.*?)__/g,
+      (match) => ADMACRO[match] || "",
     );
+    /*
+    stream_url = stream_url.replace("__APP_NAME__", `${ADMACRO.__APP_NAME__}`);
     stream_url = stream_url.replace(
       "__APP_BUNDLE__",
       `${encodeURI(ADMACRO.__APP_BUNDLE__)}`,
@@ -39,6 +41,7 @@ function openVideoDialog(
       "__DEVICE_ID__",
       `${encodeURI(ADMACRO.__DEVICE_ID__)}`,
     );
+    */
   } catch (e) {
     console.log(e.message);
   }
@@ -79,6 +82,8 @@ function openVideoDialog(
   //ad macro url vast tag bof
   try {
     ADMACRO.__TIMESTAMP__ = Date.now();
+    AD_TAG = AD_TAG.replace(/__(.*?)__/g, (match) => ADMACRO[match] || "");
+    /*
     AD_TAG = AD_TAG.replace(
       "__APP_NAME__",
       `${encodeURI(ADMACRO.__APP_NAME__)}`,
@@ -106,6 +111,7 @@ function openVideoDialog(
     } else {
       AD_TAG = AD_TAG.replace("__US_PRIVACY__", `${encodeURI("1YNN")}`);
     }
+    */
   } catch (e) {
     console.log(e.message);
   }
@@ -118,7 +124,7 @@ function openVideoDialog(
     subtitleContainer.innerHTML = "";
 
     sessionStorage.setItem("cid", cid);
-    console.log("cats ", CATEGORYID, cid);
+
     initPlayer(stream_url, asset_key, AD_TAG, cid);
 
     VideoPlayed(

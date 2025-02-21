@@ -637,8 +637,8 @@ function registerKeyHandler() {
         if (!VIDEO_PLAYED) {
           POPUP = true;
           openNotificationDialog(
-            "Exit KSTP 5 Minneapolis-St. Paul, MN",
-            "Are you sure that you want to exit KSTP 5 Minneapolis-St. Paul, MN?",
+            "Exit WDRB+",
+            "Are you sure that you want to exit WDRB+?",
           );
         } else {
         }

@@ -63,12 +63,18 @@ function initPlayer(stream_url, asset_key, AD_TAG, cid) {
   BACKUP_STREAM = stream_url;
   TEST_ASSET_KEY = asset_key;
   //pre-roll ads
-  let sectionAd;
-  sectionAd = SECTION_AD.filter((section) => {
+  //let sectionAd;
+  const sectionAd = SECTION_AD.filter((section) => {
     if (section.id === cid) {
+      ADMACRO.__TIMESTAMP__ = Date.now();
+      section.adUrl = section.adUrl.replace(
+        /__(.*?)__/g,
+        (match) => ADMACRO[match] || "",
+      );
       return section.adUrl;
     }
   });
+
   //if section targete ads available then use it else get it from config.
   if (sectionAd.length) {
     AD_TAG = sectionAd[0].adUrl;
@@ -392,7 +398,6 @@ function loadUrl(url) {
   });
   hls.on(Hls.Events.SUBTITLE_FRAG_PROCESSED, function (event, data) {
     // console.log("FRAG PROCESSED ", data);
-    // document.getElementById("log").textContent = JSON.stringify(data);
     //console.log("CC URL  ", data.frag._url);
     /* ADDING SUBTITLE (VTT) TRACK TO VIDEO ELEMNET */
   });
@@ -412,7 +417,7 @@ function loadUrl(url) {
   // });
   var error = [];
   hls.on(Hls.Events.ERROR, function (event, data) {
-    //console.log(" ERRROR  ", data);
+    console.log(" ERRROR  ", data);
 
     if (data.type === "otherError") {
       // hls.loadSource(hls.url);
@@ -1023,14 +1028,11 @@ function attemptSyncToLiveEdge() {
     const liveEdge = hls.liveSyncPosition;
     if (liveEdge) {
       //  console.log("Live edge found, syncing playback...");
-      document.getElementById("log").textContent =
-        "Live edge found, syncing playback...";
+
       hls.media.currentTime = liveEdge;
       clearInterval(syncInterval);
     } else {
       // console.log("Live edge not yet available, waiting...");
-      document.getElementById("log").textContent =
-        "Live edge not yet available, waiting...";
     }
   }, 1000); // Check every second until the live edge is available
 }

@@ -3,10 +3,10 @@ var CATEGORYID;
 var AD_TAG = "";
 var SECTION_AD = [];
 var ITEM_ID;
-var BASEURL = "https://dispatch.whizti.com/api/";
+var BASEURL = "https://prodman.whizti.com/api/";
 var IMAGE_RESIZE_URL = "https://resizer.whizti.com/api/resize/300?url=";
 
-var PUBID = 743; //875; //743; //875; //743;
+var PUBID = 189; //189; //875; //743; //875; //743;
 var CUSTOME_OVERLAY;
 var SERVER_ERROR;
 var WEATHER_URL;
@@ -103,35 +103,22 @@ async function videoList() {
         const content_uri = content.uri;
         //ad macro url bof
         var contentUri;
+
         try {
           ADMACRO.__TIMESTAMP__ = Date.now();
           contentUri = content.uri.replace(
-            "__APP_NAME__",
-            `${encodeURI(ADMACRO.__APP_NAME__)}`,
+            /__(.*?)__/g,
+            (match) => ADMACRO[match] || "",
           );
-          contentUri = contentUri.replace(
-            "__APP_BUNDLE__",
-            `${encodeURI(ADMACRO.__APP_BUNDLE__)}`,
-          );
-          contentUri = contentUri.replace(
-            "__USER_AGENT__",
-            `${encodeURI(ADMACRO.__USER_AGENT__)}`,
-          );
-          contentUri = contentUri.replace(
-            "__IP__",
-            `${encodeURI(ADMACRO.__IP__)}`,
-          );
-          contentUri = contentUri.replace(
-            "__TIMESTAMP__",
-            `${encodeURI(ADMACRO.__TIMESTAMP__)}`,
-          );
-          contentUri = contentUri.replace(
-            "__DEVICE_ID__",
-            `${encodeURI(ADMACRO.__DEVICE_ID__)}`,
+
+          AD_TAG = AD_TAG.replace(
+            /__(.*?)__/g,
+            (match) => ADMACRO[match] || "",
           );
         } catch (e) {
           console.log(e.message);
         }
+
         //ad macro url eof
 
         sessionStorage.setItem("video_title", content.title);
@@ -315,7 +302,7 @@ async function hide_loader() {
 }
 
 async function weatherIcon(url) {
-  url = "https://test.whizti.com/json/weather123.json";
+  //url = "https://test.whizti.com/json/weather123.json";
   // const spinner = document.getElementById("spinner");
   // spinner.removeAttribute("hidden");
   //console.log(url);

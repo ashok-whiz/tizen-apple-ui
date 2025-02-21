@@ -1,4 +1,5 @@
 window.onload = async (event) => {
+  getPublicIP();
   document.getElementById("idx").focus();
   //console.log("page is fully loaded");
   registerKeyHandler();
@@ -61,23 +62,8 @@ function popupVisibilitybyClass(className) {
 
 //////// ad macro config ///
 
-var ip = null;
-try {
-  ip = webapis.network.getIp();
-} catch (e) {
-  console.log(
-    "getIp exception [" +
-      e.code +
-      "] name: " +
-      e.name +
-      " message: " +
-      e.message,
-  );
-}
-
 var userAgent = navigator.userAgent;
-
-var device_id;
+var device_id = "";
 var rdp; //ccpa
 try {
   device_id = webapis.adinfo.getTIFA();
@@ -89,16 +75,38 @@ try {
 } catch (e) {
   console.log("Error getting LATE", e.message, "----", e.name);
 }
+// getting device id
+var deviceId;
+try {
+  deviceId = tizen.systeminfo.getCapability("http://tizen.org/system/tizenid");
+} catch (error) {
+  console.error("Error getting Device ID:", error.message);
+}
 
-const ADMACRO = {
-  __APP_BUNDLE__: "LTv5tIjXdW",
-  __APP_NAME__: "KSTP 5 Minneapolis-St. Paul, MN".trim(),
-  __DEVICE_ID__: device_id,
-  __TIMESTAMP__: "",
-  __IP__: ip,
-  __USER_AGENT__: userAgent,
-  __RDP__: rdp,
+var ADMACRO = {
+  __PLATFORM__: "samsungtv",
+  __APP_BUNDLE__: "",
+  __APP_NAME__: encodeURIComponent("WDRB+"),
+  __APP_STORE_URL__: "",
+  __APP_IAB_BUNDLE__: "",
+  __DEVICE_ID__: encodeURIComponent(deviceId),
+  __APP_ID_TYPE__: device_id,
+  __US_PRIVACY__: rdp ? "1YYN" : "1YNN",
+  __TIMESTAMP__: Date.now().toString(),
+  __IP__: "",
+  __USER_AGENT__: encodeURIComponent(navigator.userAgent), // URL encode UA
 };
+
+async function getPublicIP() {
+  try {
+    let response = await fetch("https://api64.ipify.org?format=json");
+    let data = await response.json();
+    ADMACRO.__IP__ = data.ip;
+  } catch (error) {
+    ip = webapis.network.getIp();
+    ADMACRO.__IP__ = ip;
+  }
+}
 
 ////////////////////////////
 /*
@@ -119,10 +127,9 @@ async function postJSON(data) {
   }
 }
 */
-// try {
-//    var bluetooth = tizen.systeminfo.getCapability("http://tizen.org/system/tizenid");
-//   console.log(" Device id = " + bluetooth);
 
-// } catch (error) {
-//   console.log("Error name: " + error.name + ", message: " + error.message);
+// if (typeof tizen !== "undefined" && tizen.systeminfo) {
+//   console.log("tizen.systeminfo API is available");
+// } else {
+//   console.error("tizen.systeminfo API is NOT available");
 // }

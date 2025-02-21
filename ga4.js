@@ -1,6 +1,6 @@
-var LOCATION = "KSTP 5 Minneapolis-St. Paul, MN";
+var LOCATION = "WDRB+";
 var BRAND = "SamsungTV";
-var APP_VERSION = "1.2.9";
+var APP_VERSION = "1.3.1";
 function generateUUID() {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
     const r = (Math.random() * 16) | 0,
@@ -21,8 +21,8 @@ function getClientId() {
 
 // Function to send GA event using Fetch API
 const client_id = getClientId();
-const measurementId = `G-BKGYXQBWTV`;
-const apiSecret = `yixndTC4R1OsVYM4WTNUlQ`;
+const measurementId = `G-HKR873FHSF`;
+const apiSecret = `YMSrZXh1TdqXqpYLSk4HqQ`;
 const url = `https://www.google-analytics.com/mp/collect?measurement_id=${measurementId}&api_secret=${apiSecret}`;
 
 function AppLaunchUser(eventAction, location, brand, app_version) {

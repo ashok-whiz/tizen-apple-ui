@@ -43,10 +43,9 @@ function openMiniVideoDialog(stream_url, asset_key, video_group, cid, itid) {
 
   try {
     ADMACRO.__TIMESTAMP__ = Date.now();
-    AD_TAG = AD_TAG.replace(
-      "__APP_NAME__",
-      `${encodeURI(ADMACRO.__APP_NAME__)}`,
-    );
+    AD_TAG = AD_TAG.replace(/__(.*?)__/g, (match) => ADMACRO[match] || "");
+    /*
+    AD_TAG = AD_TAG.replace("__APP_NAME__", `${ADMACRO.__APP_NAME__}`);
     AD_TAG = AD_TAG.replace(
       "__APP_BUNDLE__",
       `${encodeURI(ADMACRO.__APP_BUNDLE__)}`,
@@ -70,6 +69,7 @@ function openMiniVideoDialog(stream_url, asset_key, video_group, cid, itid) {
     } else {
       AD_TAG = AD_TAG.replace("__US_PRIVACY__", `${encodeURI("1YNN")}`);
     }
+    */
   } catch (e) {
     console.log("catc ADD TAG", AD_TAG, e.message);
   }
@@ -80,6 +80,7 @@ function openMiniVideoDialog(stream_url, asset_key, video_group, cid, itid) {
     subtitleContainer.style.display = "none";
     subtitleContainer.innerHTML = "";
     initPlayer(stream_url, asset_key, AD_TAG, cid);
+
     console.log("---------- VOD PLAYING... --------");
   } else if (video_group === "live" && asset_key !== undefined) {
     const subtitleContainer = document.getElementById("subtitleContainer");
@@ -87,6 +88,7 @@ function openMiniVideoDialog(stream_url, asset_key, video_group, cid, itid) {
     subtitleContainer.innerHTML = "";
     //initLivePlayer(stream_url, asset_key); //No preroll only DAI
     initPlayer(stream_url, asset_key, AD_TAG, cid); // With preroll & DAI Ads
+
     console.log("---------- LIVE PLAYING... --------");
   }
 
