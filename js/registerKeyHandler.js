@@ -19,6 +19,8 @@ function registerKeyHandler() {
     tizen.tvinputdevice.registerKey("MediaFastForward");
     tizen.tvinputdevice.registerKey("Exit");
     if (popupVisibilitybyId("weatherPage")) return;
+    if (popupVisibilitybyId("aboutUs")) return;
+
     switch (e.keyCode) {
       case 37: //LEFT arrow
         // bof weather & miniplayer focus
@@ -441,6 +443,20 @@ function registerKeyHandler() {
             return;
           }
           // weather eof
+
+          // About us page bof
+          let focusedElement = document.getElementsByClassName("item focused");
+          if (focusedElement.length != 0) {
+            let aboutId = focusedElement[0].attributes["id"].nodeValue;
+
+            if (aboutId === "aboutus") {
+              videoElement.pause();
+              openAboutus();
+              return;
+            }
+          }
+          // About us page eof
+
           // maximize miniplayer on tap bof
           const miniPlayer = document.querySelector("#video");
           if (miniPlayer.classList.contains("focused")) {
@@ -637,8 +653,8 @@ function registerKeyHandler() {
         if (!VIDEO_PLAYED) {
           POPUP = true;
           openNotificationDialog(
-            "Exit WDRB+",
-            "Are you sure that you want to exit WDRB+?",
+            "Exit " + appInfo.name,
+            "Are you sure that you want to exit " + appInfo.name + "?",
           );
         } else {
         }

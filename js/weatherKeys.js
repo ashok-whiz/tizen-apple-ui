@@ -26,113 +26,133 @@ function weatherKeys() {
       //   break;
 
       case 37: // Left key
-        if (wvideo.classList.contains("full-screen")) return;
-        let leftElement = document.getElementsByClassName(
-          "hourly-item focused",
-        );
+        try {
+          if (wvideo && wvideo.classList.contains("full-screen")) return;
+          let leftElement = document.getElementsByClassName(
+            "hourly-item focused",
+          );
 
-        let leftid = leftElement[0].parentElement.id;
-        //let leftKey = document.getElementById("hourly-container");
-        let leftKey = document.getElementById(leftid);
+          let leftid = leftElement[0].parentElement.id;
+          //let leftKey = document.getElementById("hourly-container");
+          let leftKey = document.getElementById(leftid);
 
-        let lcount = leftKey.children;
-        let lcounter = 0;
+          let lcount = leftKey.children;
+          let lcounter = 0;
 
-        for (let i = 0; i < lcount.length; i++) {
-          if (leftKey.children[i].className === "hourly-item focused") {
-            lcounter = i;
+          for (let i = 0; i < lcount.length; i++) {
+            if (leftKey.children[i].className === "hourly-item focused") {
+              lcounter = i;
 
-            break;
+              break;
+            }
           }
+
+          for (let i = 0; i < lcount.length; i++) {
+            if (i === lcounter) {
+              if (lcounter <= 0) break;
+              leftKey.children[i].classList.remove("focused");
+              lcounter--;
+              leftKey.children[lcounter].classList.add("focused");
+
+              let focuseEl = document.getElementsByClassName(
+                "hourly-item focused",
+              );
+              // let setfocus = focuseEl[0].attributes["id"].nodeValue;
+              // document.getElementById(setfocus).focus();
+
+              leftKey.children[lcounter].scrollIntoView(false);
+              leftKey.children[lcounter].scrollIntoView({ block: "start" });
+              leftKey.children[lcounter].scrollIntoView({
+                // behavior: "smooth",
+                // block: "start",
+                // inline: "nearest",
+                behavior: "instant",
+                block: "end",
+              });
+
+              break;
+            }
+          }
+        } catch (error) {
+          console.log(error);
         }
 
-        for (let i = 0; i < lcount.length; i++) {
-          if (i === lcounter) {
-            if (lcounter <= 0) break;
-            leftKey.children[i].classList.remove("focused");
-            lcounter--;
-            leftKey.children[lcounter].classList.add("focused");
-
-            let focuseEl = document.getElementsByClassName(
-              "hourly-item focused",
-            );
-            // let setfocus = focuseEl[0].attributes["id"].nodeValue;
-            // document.getElementById(setfocus).focus();
-
-            leftKey.children[lcounter].scrollIntoView(false);
-            leftKey.children[lcounter].scrollIntoView({ block: "start" });
-            leftKey.children[lcounter].scrollIntoView({
-              behavior: "smooth",
-              block: "start",
-              inline: "nearest",
-            });
-
-            break;
-          }
-        }
         break;
 
       case 38: // up arrow
-        if (currentIndex > 0) {
-          currentIndex--;
-          updateHighlight(currentIndex);
-          // addVideoFocuse();
-        }
-        if (currentIndex === 0) {
-          addVideoFocuse();
+        if (document.contains(document.querySelector("#currentWithVideo"))) {
+          if (currentIndex > 0) {
+            currentIndex--;
+            updateHighlight(currentIndex);
+            // addVideoFocuse();
+          }
+          if (currentIndex === 0) {
+            addVideoFocuse();
+          }
+        } else {
+          if (currentIndex > 1) {
+            currentIndex--;
+            updateHighlight(currentIndex);
+          }
         }
         break;
 
       case 39: //Right arrow
-        if (!popupVisibilitybyId("weatherPage")) return;
-        if (wvideo.classList.contains("full-screen")) return;
-        if (MINI_TIMEOUT_ID) {
-          clearTimeout(MINI_TIMEOUT_ID);
-        }
-
-        let element = document.getElementsByClassName("hourly-item focused");
-        let id = element[0].parentElement.id;
-        //const container = document.querySelector("#hourly-container");
-        const container = document.querySelector(`#${id}`);
-
-        let count = container.children;
-        let right_counter = 0;
-
-        for (let i = 0; i < count.length; i++) {
-          if (container.children[i].className === "hourly-item focused") {
-            right_counter = i;
-
-            break;
+        try {
+          if (!popupVisibilitybyId("weatherPage")) return;
+          if (wvideo && wvideo.classList.contains("full-screen")) return;
+          if (MINI_TIMEOUT_ID) {
+            clearTimeout(MINI_TIMEOUT_ID);
           }
-        }
 
-        for (let i = 0; i < count.length - 1; i++) {
-          if (i === right_counter) {
-            container.children[i].classList.remove("focused");
-            right_counter++;
-            container.children[right_counter].classList.add("focused");
-            var focuseEl = document.getElementsByClassName(
-              "hourly-item focused",
-            );
+          let element = document.getElementsByClassName("hourly-item focused");
+          let id = element[0].parentElement.id;
+          //const container = document.querySelector("#hourly-container");
+          const container = document.querySelector(`#${id}`);
 
-            container.children[right_counter].scrollIntoView(false);
-            container.children[right_counter].scrollIntoView({
-              block: "start",
-            });
-            container.children[right_counter].scrollIntoView({
-              behavior: "smooth",
-              block: "start",
-              inline: "nearest",
-            });
+          let count = container.children;
+          let right_counter = 0;
 
-            break;
+          for (let i = 0; i < count.length; i++) {
+            if (container.children[i].className === "hourly-item focused") {
+              right_counter = i;
+
+              break;
+            }
           }
+
+          for (let i = 0; i < count.length - 1; i++) {
+            if (i === right_counter) {
+              container.children[i].classList.remove("focused");
+              right_counter++;
+              container.children[right_counter].classList.add("focused");
+              var focuseEl = document.getElementsByClassName(
+                "hourly-item focused",
+              );
+
+              container.children[right_counter].scrollIntoView(false);
+              container.children[right_counter].scrollIntoView({
+                block: "start",
+              });
+              container.children[right_counter].scrollIntoView({
+                // behavior: "smooth",
+                // block: "start",
+                // inline: "nearest",
+                behavior: "instant",
+                block: "end",
+              });
+
+              break;
+            }
+          }
+        } catch (e) {
+          console.log(e);
         }
         break;
       case 40: //DOWN arrow
         //console.log("currI ndex", currentIndex, "item lenght ", items.length);
 
-        if (wvideo.classList.contains("full-screen")) return;
+        if (wvideo && wvideo.classList.contains("full-screen")) return;
         if (currentIndex < items.length - 1) {
           currentIndex++;
           updateHighlight(currentIndex);
@@ -230,7 +250,10 @@ function updateHighlight(index) {
     }
   });
   const weather_video = document.getElementById("weather-video");
-  if (weather_video.classList.contains("weather-video-focused")) {
+  if (
+    weather_video &&
+    weather_video.classList.contains("weather-video-focused")
+  ) {
     weather_video.classList.remove("weather-video-focused");
     weather_video.classList.add("miniFocuse");
   }
@@ -239,8 +262,11 @@ function updateHighlight(index) {
 
   items[index].children[0].scrollIntoView(true);
   items[index].children[0].scrollIntoView({
-    behavior: "smooth",
-    block: "start",
+    //behavior: "smooth",
+    behavior: "instant",
+    //block: "start",
+    block: "end",
+    // inline: "nearest",
   });
   // items[index].scrollIntoView({
   //   behavior: "instant",
@@ -251,7 +277,10 @@ function updateHighlight(index) {
 
 function addVideoFocuse() {
   const weather_video = document.getElementById("weather-video");
-  if (!weather_video.classList.contains("weather-video-focused")) {
+  if (
+    weather_video &&
+    !weather_video.classList.contains("weather-video-focused")
+  ) {
     weather_video.classList.remove("miniFocuse");
     weather_video.classList.add("weather-video-focused");
   }

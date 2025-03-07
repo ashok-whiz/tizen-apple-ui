@@ -4,6 +4,7 @@ window.onload = async (event) => {
   //console.log("page is fully loaded");
   registerKeyHandler();
   weatherKeys();
+  aboutPageKeys();
 
   await show_loader();
   await videoList();
@@ -18,12 +19,18 @@ window.onload = async (event) => {
   // Publication();
 };
 
+var appInfo;
+try {
+  appInfo = tizen.application.getAppInfo();
+} catch (e) {
+  //console.log("App info error ", e);
+  appInfo = {
+    name: "WDRB+",
+    version: "1.3.1",
+  };
+}
+
 function terminate() {
-  // if (window.confirm("Do you really want to leave?")) {
-  //   localStorage.removeItem("videoPlayed");
-  //   localStorage.removeItem("CAT_ID");
-  //   tizen.application.getCurrentApplication().exit();
-  // }
   localStorage.removeItem("videoPlayed");
   localStorage.removeItem("CAT_ID");
   localStorage.removeItem("ccSettings");
@@ -65,11 +72,14 @@ function popupVisibilitybyClass(className) {
 var userAgent = navigator.userAgent;
 var device_id = "";
 var rdp; //ccpa
+/*
 try {
   device_id = webapis.adinfo.getTIFA();
+  console.log("tifa", device_id);
 } catch (e) {
   console.log("Error getting TIFA: ", e.message);
 }
+  */
 try {
   rdp = webapis.adinfo.isLATEnabled();
 } catch (e) {
@@ -86,12 +96,13 @@ try {
 var ADMACRO = {
   __PLATFORM__: "samsungtv",
   __APP_BUNDLE__: "",
-  __APP_NAME__: encodeURIComponent("WDRB+"),
+  __APP_NAME__: encodeURIComponent(appInfo.name),
   __APP_STORE_URL__: "",
   __APP_IAB_BUNDLE__: "",
   __DEVICE_ID__: encodeURIComponent(deviceId),
-  __APP_ID_TYPE__: device_id,
+  __APP_ID_TYPE__: "tifa",
   __US_PRIVACY__: rdp ? "1YYN" : "1YNN",
+  __APP_IS_LAT__: rdp ? "1" : "0",
   __TIMESTAMP__: Date.now().toString(),
   __IP__: "",
   __USER_AGENT__: encodeURIComponent(navigator.userAgent), // URL encode UA
@@ -127,9 +138,3 @@ async function postJSON(data) {
   }
 }
 */
-
-// if (typeof tizen !== "undefined" && tizen.systeminfo) {
-//   console.log("tizen.systeminfo API is available");
-// } else {
-//   console.error("tizen.systeminfo API is NOT available");
-// }

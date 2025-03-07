@@ -1,6 +1,6 @@
-var LOCATION = "WDRB+";
+var LOCATION = appInfo.name;
 var BRAND = "SamsungTV";
-var APP_VERSION = "1.3.1";
+var APP_VERSION = appInfo.version;
 function generateUUID() {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
     const r = (Math.random() * 16) | 0,

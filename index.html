@@ -31,6 +31,7 @@
     <link rel="stylesheet" type="text/css" href="css/videoPopup.css" />
     <link rel="stylesheet" href="css/captionSettings.css" />
     <link rel="stylesheet" href="css/weather.css" />
+    <link rel="stylesheet" href="css/aboutus.css" />
     <script type="text/javascript" src="$WEBAPIS/webapis/webapis.js"></script>
     <script type="text/javascript" src="js/playerController.js"></script>
 
@@ -42,7 +43,7 @@
     />
 
     <!-- Firebase Analytics -->
-    <script src="ga4.js"></script>
+    <!-- <script src="ga4.js"></script> -->
   </head>
 
   <body tabindex="2000" id="idx" aria-label="please wait.">
@@ -407,7 +408,7 @@
           <div class="current-heading" id="current-heading"></div>
           <hr />
         </div>
-        <div class="current-pan">
+        <div class="current-pan" id="currentWithVideo">
           <div class="current-pan-condition">
             <div id="current-condition-container"></div>
           </div>
@@ -423,6 +424,7 @@
             <div id="weather-video-status" class="weather-video-status"></div>
           </div>
         </div>
+        <div id="current-condition-containerFullWidth"></div>
         <div class="hour24heading" id="hours24"></div>
         <div class="hourly-container weatheritem" id="hourly-container"></div>
         <div class="hour24heading" id="days"></div>
@@ -431,6 +433,9 @@
     </div>
 
     <!-- weather page eof -->
+    <!-- Abuout us bof -->
+    <div id="aboutUs"></div>
+    <!-- About us eof -->
 
     <script src="js/hlsPlayer.js"></script>
     <!-- onl DAI ads no proroll for live video-->
@@ -459,12 +464,14 @@
 
     <script type="text/javascript" src="js/captionSettings.js"></script>
     <script type="text/javascript" src="js/captionMenu.js"></script>
+    <script src="ga4.js"></script>
     <!-- <script type="text/javascript" src="js/ga4.js"></script> -->
     <!-- <script type="module" src="ga4.js"></script> -->
     <!-- <script type="text/javascript" src="js/playerController.js" ></script> -->
 
     <script src="js/weather.js"></script>
     <script src="js/weatherKeys.js"></script>
+    <script src="js/aboutus.js"></script>
     <script src="js/util.js"></script>
   </body>
 </html>

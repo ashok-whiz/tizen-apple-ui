@@ -47,6 +47,9 @@
   height: 300px;
  
 }
+#current-condition-containerFullWidth{
+  margin-top: 25px;
+}
 #current-condition-div{
   display: flex;
   /* justify-content: space-between; */
@@ -64,8 +67,23 @@
  
   font-size: 2.5em;
 }
+.current-box-novideo{
+  width: 32%;
+ 
+  color: #acb6be;
+  background-color: #38516d;
+ 
+  font-size: 2.5em;
+}
 .current-box-temperature{
   width: 50%;
+  color: #acb6be;
+  background-color: #38516d;
+  margin-right: 10px;
+  font-size: 2em; /*2.5*/
+}
+.current-box-temperature-novideo{
+  width: 33%;
   color: #acb6be;
   background-color: #38516d;
   margin-right: 10px;
@@ -90,8 +108,15 @@
   padding: 4px;
 }
 .sunrise-box{
-  width: 175px; /*182*/
-  font-size: 1.3em; /*1.2em*/
+  width: 178px; /*182*/
+  font-size: 28px; /*1.2em*/
+  font-weight: bolder;
+  text-align: center;
+}
+
+.sunrise-box-right-col{
+  width: 212px; /*182*/
+  font-size: 28px; /*1.2em*/
   font-weight: bolder;
   text-align: center;
 }
@@ -142,12 +167,13 @@ justify-content: center;
 height: auto;
 }
 .ptext{
-  font-size: 1.5em;
+  /* font-size: 1.5em; */
+  font-size: 35px;
   color: #c4cfda;
   line-height: 0;
 }
 #moon{
-  width: 15em;
+  /* width: 15em; */
 }
 .hour24heading{
   height: 85px;
@@ -392,4 +418,13 @@ width: 148;
   /* background-color: black; */
   font-size: 5em;
   font-weight: bolder;
+}
+.rightbox{
+  color: #acb6be;
+  background-color: #38516d;
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 10px;
+  padding-top: 33px;
+  justify-content: center;
 }

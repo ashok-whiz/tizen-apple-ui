@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget xmlns:tizen="http://tizen.org/ns/widgets" xmlns="http://www.w3.org/ns/widgets" id="http://wdrb.com" version="1.3.1" viewmodes="maximized">
-    <access origin="*" subdomains="true"></access>
+    <access origin="*" subdomains="true"/>
     <tizen:application id="WqR9DlQH3f.WDRBNewsLouisvilleFOX41" package="WqR9DlQH3f" required_version="2.3"/>
     <content src="index.html"/>
     <feature name="http://tizen.org/feature/screen.size.normal.1080.1920"/>
     <icon src="icon.png"/>
     <tizen:metadata key="http://samsung.com/tv/metadata/prelaunch.support" value="true"/>
     <tizen:metadata key="http://samsung.com/tv/metadata/use.voiceguide" value="false"/>
-    
     <name>WDRB+</name>
     <preference name="*" value="" readonly="true"/>
     <tizen:privilege name="http://tizen.org/privilege/account.write"/>
@@ -26,20 +25,8 @@
     <tizen:privilege name="http://developer.samsung.com/privilege/adinfo"/>
     <tizen:privilege name="http://tizen.org/privilege/tv.info"/>
     <tizen:privilege name="http://tizen.org/privilege/privacyidentifier"/>
+    <tizen:privilege name="http://tizen.org/privilege/application.info"/>
+
     <tizen:profile name="tv-samsung"/>
     <tizen:setting screen-orientation="landscape" context-menu="enable" background-support="disable" encryption="disable" install-location="auto" hwkey-event="enable"/>
 </widget>
-
-
-<!-- <?xml version="1.0" encoding="UTF-8"?>
-<widget xmlns:tizen="http://tizen.org/ns/widgets" xmlns="http://www.w3.org/ns/widgets" id="http://yourdomain/AppleUi" version="0.2.1" viewmodes="maximized">
-    <tizen:application id="Xgi9cp7EHN.AppleUi" package="Xgi9cp7EHN" required_version="2.3"/>
-    <content src="index.html"/>
-    <feature name="http://tizen.org/feature/screen.size.normal.1080.1920"/>
-    <icon src="icon.png"/>
-    <tizen:metadata key="http://samsung.com/tv/metadata/prelaunch.support" value="true"/>
-    <name>AppleUi</name>
-    <tizen:privilege name="http://tizen.org/privilege/application.launch"/>
-    <tizen:profile name="tv-samsung"/>
-    <tizen:setting screen-orientation="landscape" context-menu="enable" background-support="disable" encryption="disable" install-location="auto" hwkey-event="enable"/>
-</widget> -->

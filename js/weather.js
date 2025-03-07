@@ -7,370 +7,390 @@ var BADURL = false;
 var hlsWeather;
 
 async function openWeather() {
-  //WEATHER_URL = "https://test.whizti.com/json/weather123.json";
-  if (WEATHER_URL === undefined) return;
-  const status = document.getElementById("weather-video-status");
-  status.style.display = "none";
   try {
-    const response = await getData(WEATHER_URL, {
-      timeout: 30000,
-    });
-    weatherData = await response.json();
-  } catch (error) {
-    // Timeouts if the request takes
-    // longer than 30 seconds
-    SERVER_ERROR = true;
-    console.log(error.name === "AbortError");
-    console.log("ERROR : ", error);
-    openErrorNotification("Error", "An error occured");
-  }
+    //WEATHER_URL = "https://test.whizti.com/json/weather123.json";
+    if (WEATHER_URL === undefined) return;
 
-  const weatherIcon = document.getElementById("weather-icon");
-  if (weatherIcon.classList.contains("focused"))
-    weatherIcon.classList.remove("focused");
-  const weatherPage = document.getElementById("weatherPage");
-  weatherPage.style.display = "block";
-  const currentHeading = document.querySelector("#current-heading");
-  currentHeading.textContent = `Current conditons for ${weatherData.CurrentCondition.City}`;
-  const table = document.querySelector("#current-condition-container");
+    const status = document.getElementById("weather-video-status");
+    if (status) status.style.display = "none";
+    try {
+      const response = await getData(WEATHER_URL, {
+        timeout: 30000,
+      });
+      weatherData = await response.json();
+    } catch (error) {
+      // Timeouts if the request takes
+      // longer than 30 seconds
+      SERVER_ERROR = true;
+      console.log(error.name === "AbortError");
+      console.log("ERROR : ", error);
+      openErrorNotification("Error", "An error occured");
+    }
 
-  table.innerHTML = "";
-  let halfCurrentConditons =
-    '<div id="current-condition-div"><div class="current-box-temperature"><div class="ftemp">';
-  if (weatherData.CurrentCondition.Temperature) {
+    const weatherIcon = document.getElementById("weather-icon");
+    if (weatherIcon.classList.contains("focused"))
+      weatherIcon.classList.remove("focused");
+    const weatherPage = document.getElementById("weatherPage");
+    weatherPage.style.display = "block";
+    const currentHeading = document.querySelector("#current-heading");
+    currentHeading.textContent = `Current conditons for ${weatherData.CurrentCondition.City}`;
+    const table = document.querySelector("#current-condition-container");
+
+    if (table) table.innerHTML = "";
+
+    let halfCurrentConditons =
+      '<div id="current-condition-div"><div class="current-box-temperature"><div class="ftemp">';
+    if (weatherData.CurrentCondition.Temperature) {
+      halfCurrentConditons +=
+        weatherData.CurrentCondition.Temperature + "&#8457;";
+    } else {
+      halfCurrentConditons += "-";
+    }
+    halfCurrentConditons += "</div>";
+    halfCurrentConditons += '<div class="current-text">';
+    if (weatherData.CurrentCondition.WeatherDescShort) {
+      halfCurrentConditons += weatherData.CurrentCondition.WeatherDescShort;
+    } else {
+      halfCurrentConditons += "-";
+    }
+    halfCurrentConditons += "</div></div>";
+
+    halfCurrentConditons += '<div class="current-box"><div class="icondiv">';
+    if (weatherData.CurrentCondition.WeatherIconURL) {
+      halfCurrentConditons +=
+        '<img class="current-icon" src="' +
+        weatherData.CurrentCondition.WeatherIconURL +
+        '"/>';
+    } else {
+      halfCurrentConditons += "-";
+    }
+
+    halfCurrentConditons += "</div>";
+
+    halfCurrentConditons += '<div class="current-text">';
+    if (weatherData.CurrentCondition.RealFeelTemperature) {
+      halfCurrentConditons +=
+        "Feels like " +
+        weatherData.CurrentCondition.RealFeelTemperature +
+        "&#8457;";
+    } else {
+      halfCurrentConditons += "-";
+    }
+    halfCurrentConditons += "</div></div> </div>";
+
+    halfCurrentConditons += '<div class="sunrise-container">';
+
     halfCurrentConditons +=
-      weatherData.CurrentCondition.Temperature + "&#8457;";
-  } else {
-    halfCurrentConditons += "-";
-  }
-  halfCurrentConditons += "</div>";
-  halfCurrentConditons += '<div class="current-text">';
-  if (weatherData.CurrentCondition.WeatherDescShort) {
-    halfCurrentConditons += weatherData.CurrentCondition.WeatherDescShort;
-  } else {
-    halfCurrentConditons += "-";
-  }
-  halfCurrentConditons += "</div></div>";
+      '<div class="sunrise-box">Temperature<p class="ptext" />';
+    if (weatherData.CurrentCondition.HighTemperature) {
+      halfCurrentConditons +=
+        weatherData.CurrentCondition.HighTemperature + "&#8457;";
+    } else {
+      halfCurrentConditons += "-";
+    }
+    halfCurrentConditons += "/";
+    if (weatherData.CurrentCondition.LowTemperature) {
+      halfCurrentConditons +=
+        weatherData.CurrentCondition.LowTemperature + "&#8457;";
+    } else {
+      halfCurrentConditons += "-";
+    }
+    halfCurrentConditons += "</p>";
+    halfCurrentConditons += "</div>";
 
-  halfCurrentConditons += '<div class="current-box"><div class="icondiv">';
-  if (weatherData.CurrentCondition.WeatherIconURL) {
+    halfCurrentConditons += '<div class="sunrise-box">Wind<p class="ptext">';
+    if (weatherData.CurrentCondition.WindDirection) {
+      halfCurrentConditons += weatherData.CurrentCondition.WindDirection;
+    } else {
+      halfCurrentConditons += "- ";
+    }
+    if (weatherData.CurrentCondition.WindSpeedMiles) {
+      halfCurrentConditons +=
+        weatherData.CurrentCondition.WindSpeedMiles + " mph";
+    } else {
+      halfCurrentConditons += "-";
+    }
+    halfCurrentConditons += "</p>";
+    halfCurrentConditons += "</div>";
+
     halfCurrentConditons +=
-      '<img class="current-icon" src="' +
-      weatherData.CurrentCondition.WeatherIconURL +
-      '"/>';
-  } else {
-    halfCurrentConditons += "-";
-  }
+      '<div class="sunrise-box">Humidity<p class="ptext">';
+    if (weatherData.CurrentCondition.Humidity) {
+      halfCurrentConditons += weatherData.CurrentCondition.Humidity + "%";
+    } else {
+      halfCurrentConditons += "-";
+    }
+    halfCurrentConditons += "</p></div>";
 
-  halfCurrentConditons += "</div>";
-
-  halfCurrentConditons += '<div class="current-text">';
-  if (weatherData.CurrentCondition.RealFeelTemperature) {
     halfCurrentConditons +=
-      "Feels like " +
-      weatherData.CurrentCondition.RealFeelTemperature +
-      "&#8457;";
-  } else {
-    halfCurrentConditons += "-";
-  }
-  halfCurrentConditons += "</div></div> </div>";
+      '<div class="sunrise-box">Pressure<p class="ptext">';
+    if (weatherData.CurrentCondition.Pressure) {
+      halfCurrentConditons += weatherData.CurrentCondition.Pressure + "Hg";
+    } else {
+      halfCurrentConditons += "-";
+    }
+    halfCurrentConditons += "</p> </div>";
 
-  halfCurrentConditons += '<div class="sunrise-container">';
+    halfCurrentConditons += '<div class="sunrise-box">Sunrise<p class="ptext">';
+    if (weatherData.CurrentCondition.Sunrise) {
+      halfCurrentConditons += weatherData.CurrentCondition.Sunrise;
+    } else {
+      halfCurrentConditons += "-";
+    }
+    halfCurrentConditons += "</p></div>";
 
-  halfCurrentConditons +=
-    '<div class="sunrise-box">Temperature<p class="ptext" />';
-  if (weatherData.CurrentCondition.HighTemperature) {
+    halfCurrentConditons += '<div class="sunrise-box">Sunset<p class="ptext">';
+    if (weatherData.CurrentCondition.Sunset) {
+      halfCurrentConditons += weatherData.CurrentCondition.Sunset;
+    } else {
+      halfCurrentConditons += "-";
+    }
+    halfCurrentConditons += "</p></div>";
+
     halfCurrentConditons +=
-      weatherData.CurrentCondition.HighTemperature + "&#8457;";
-  } else {
-    halfCurrentConditons += "-";
-  }
-  halfCurrentConditons += "/";
-  if (weatherData.CurrentCondition.LowTemperature) {
+      '<div class="sunrise-box">Moonrise<p class="ptext">';
+    if (weatherData.CurrentCondition.Moonrise) {
+      halfCurrentConditons += weatherData.CurrentCondition.Moonrise;
+    } else {
+      halfCurrentConditons += "-";
+    }
+    halfCurrentConditons += "</p></div>";
+
+    halfCurrentConditons += '<div class="sunrise-box">Moonset<p class="ptext">';
+    if (weatherData.CurrentCondition.Moonset) {
+      halfCurrentConditons += weatherData.CurrentCondition.Moonset;
+    } else {
+      halfCurrentConditons += "-";
+    }
+    halfCurrentConditons += "</p></div>";
     halfCurrentConditons +=
-      weatherData.CurrentCondition.LowTemperature + "&#8457;";
-  } else {
-    halfCurrentConditons += "-";
-  }
-  halfCurrentConditons += "</p>";
-  halfCurrentConditons += "</div>";
+      '<div class="sunrise-box" id="moon">Moon phase<p class="ptext">';
+    if (weatherData.CurrentCondition.MoonPhase) {
+      halfCurrentConditons += weatherData.CurrentCondition.MoonPhase;
+    } else {
+      halfCurrentConditons += "-";
+    }
 
-  halfCurrentConditons += '<div class="sunrise-box">Wind<p class="ptext">';
-  if (weatherData.CurrentCondition.WindDirection) {
-    halfCurrentConditons += weatherData.CurrentCondition.WindDirection;
-  } else {
-    halfCurrentConditons += "- ";
-  }
-  if (weatherData.CurrentCondition.WindSpeedMiles) {
-    halfCurrentConditons +=
-      weatherData.CurrentCondition.WindSpeedMiles + " mph";
-  } else {
-    halfCurrentConditons += "-";
-  }
-  halfCurrentConditons += "</p>";
-  halfCurrentConditons += "</div>";
+    halfCurrentConditons += "</p> </div>";
+    halfCurrentConditons += "</div>";
 
-  halfCurrentConditons += '<div class="sunrise-box">Humidity<p class="ptext">';
-  if (weatherData.CurrentCondition.Humidity) {
-    halfCurrentConditons += weatherData.CurrentCondition.Humidity + "%";
-  } else {
-    halfCurrentConditons += "-";
-  }
-  halfCurrentConditons += "</p></div>";
-
-  halfCurrentConditons += '<div class="sunrise-box">Pressure<p class="ptext">';
-  if (weatherData.CurrentCondition.Pressure) {
-    halfCurrentConditons += weatherData.CurrentCondition.Pressure + "Hg";
-  } else {
-    halfCurrentConditons += "-";
-  }
-  halfCurrentConditons += "</p> </div>";
-
-  halfCurrentConditons += '<div class="sunrise-box">Sunrise<p class="ptext">';
-  if (weatherData.CurrentCondition.Sunrise) {
-    halfCurrentConditons += weatherData.CurrentCondition.Sunrise;
-  } else {
-    halfCurrentConditons += "-";
-  }
-  halfCurrentConditons += "</p></div>";
-
-  halfCurrentConditons += '<div class="sunrise-box">Sunset<p class="ptext">';
-  if (weatherData.CurrentCondition.Sunset) {
-    halfCurrentConditons += weatherData.CurrentCondition.Sunset;
-  } else {
-    halfCurrentConditons += "-";
-  }
-  halfCurrentConditons += "</p></div>";
-
-  halfCurrentConditons += '<div class="sunrise-box">Moonrise<p class="ptext">';
-  if (weatherData.CurrentCondition.Moonrise) {
-    halfCurrentConditons += weatherData.CurrentCondition.Moonrise;
-  } else {
-    halfCurrentConditons += "-";
-  }
-  halfCurrentConditons += "</p></div>";
-
-  halfCurrentConditons += '<div class="sunrise-box">Moonset<p class="ptext">';
-  if (weatherData.CurrentCondition.Moonset) {
-    halfCurrentConditons += weatherData.CurrentCondition.Moonset;
-  } else {
-    halfCurrentConditons += "-";
-  }
-  halfCurrentConditons += "</p></div>";
-  halfCurrentConditons +=
-    '<div class="sunrise-box" id="moon">Moon phase<p class="ptext">';
-  if (weatherData.CurrentCondition.MoonPhase) {
-    halfCurrentConditons += weatherData.CurrentCondition.MoonPhase;
-  } else {
-    halfCurrentConditons += "-";
-  }
-
-  halfCurrentConditons += "</p> </div>";
-  halfCurrentConditons += "</div>";
-
-  const fullWidthCurrentConditons = `
+    const fullWidthCurrentConditons = `
               <div id="current-condition-div">
 
-              <div class="current-box-temperature">
+              <div class="current-box-temperature-novideo">
               <div class="ftemp">${weatherData.CurrentCondition.Temperature}&#8457;</div>
               <div class="current-text">${weatherData.CurrentCondition.WeatherDescShort}</div>
               </div>
 
-              <div class="current-box">
+              <div class="current-box-novideo">
               <div class="icondiv"><img class="current-icon" src="${weatherData.CurrentCondition.WeatherIconURL}"/></div>
               <div class="current-text">Feels like ${weatherData.CurrentCondition.RealFeelTemperature}&#8457;</div>
               </div>
 
-              </div>
-              
-              <div class="sunrise-container">
-
-              <div class="sunrise-box">Temperature<p class="ptext" />${weatherData.CurrentCondition.HighTemperature}&#8457;/
+<div class="rightbox">
+              <div class="sunrise-box-right-col">Temperature<p class="ptext" />${weatherData.CurrentCondition.HighTemperature}&#8457;/
               ${weatherData.CurrentCondition.LowTemperature}&#8457;</p>
               </div>
 
-              <div class="sunrise-box">Wind<p class="ptext">${weatherData.CurrentCondition.WindDirection} 
+              <div class="sunrise-box-right-col">Wind<p class="ptext">${weatherData.CurrentCondition.WindDirection} 
               ${weatherData.CurrentCondition.WindSpeedMiles}mph </p>
               </div>
 
-              <div class="sunrise-box">Humidity<p class="ptext">${weatherData.CurrentCondition.Humidity}% </p></div>
-              <div class="sunrise-box">Pressure<p class="ptext">${weatherData.CurrentCondition.Pressure}Hg</p> </div>
-              <div class="sunrise-box">Sunrise<p class="ptext">${weatherData.CurrentCondition.Sunrise} </p></div>
-              <div class="sunrise-box">Sunset<p class="ptext">${weatherData.CurrentCondition.Sunset} </p></div>
-              <div class="sunrise-box">Moonrise<p class="ptext">${weatherData.CurrentCondition.Moonrise}</p></div>
-              <div class="sunrise-box">Moonset<p class="ptext">${weatherData.CurrentCondition.Moonset} </p></div>
-              <div class="sunrise-box" id="moon">Moon phase<p class="ptext">${weatherData.CurrentCondition.MoonPhase}</p> </div>
+              <div class="sunrise-box-right-col">Humidity<p class="ptext">${weatherData.CurrentCondition.Humidity}% </p></div>
+              <div class="sunrise-box-right-col">Pressure<p class="ptext">${weatherData.CurrentCondition.Pressure}Hg</p> </div>
+              <div class="sunrise-box-right-col">Sunrise<p class="ptext">${weatherData.CurrentCondition.Sunrise} </p></div>
+              <div class="sunrise-box-right-col">Sunset<p class="ptext">${weatherData.CurrentCondition.Sunset} </p></div>
+              <div class="sunrise-box-right-col">Moonrise<p class="ptext">${weatherData.CurrentCondition.Moonrise}</p></div>
+              <div class="sunrise-box-right-col">Moonset<p class="ptext">${weatherData.CurrentCondition.Moonset} </p></div>
+              <div class="sunrise-box-right-col" id="moon">Moon phase<p class="ptext">${weatherData.CurrentCondition.MoonPhase}</p> </div>
+</div>
 
-            </div>
+              </div>
+              
+            
 
   `;
-  if (weatherData.StationForecast.VideoForecastUrl) {
-    table.innerHTML = halfCurrentConditons;
-  } else {
-    table.innerHTML = fullWidthCurrentConditons;
-    console.log("FULL WIDHTH");
+    if (weatherData.StationForecast.VideoForecastUrl) {
+      table.innerHTML = halfCurrentConditons;
+    } else {
+      // document.querySelector("#currentWithVideo")?.remove();
+      const curWvideo = document.querySelector("#currentWithVideo");
+      if (curWvideo) {
+        // curWvideo.remove();
+        curWvideo.style.display = "none";
+      }
+
+      const tableFullWidth = document.querySelector(
+        "#current-condition-containerFullWidth",
+      );
+
+      tableFullWidth.innerHTML = fullWidthCurrentConditons;
+      console.log("FULL WIDHTH");
+    }
+    const currentheading = document.querySelector("#currentheading");
+    currentIndex = 0;
+    currentheading.scrollIntoView(true);
+    currentheading.scrollIntoView({
+      block: "start",
+    });
+
+    //video
+
+    const ext = weatherData.StationForecast.VideoForecastUrl.split(".").pop();
+    //var video = document.getElementById("weather-video");
+    console.log("Extenstion ", ext);
+    if (ext === "mp4") {
+      let mp4 = weatherData.StationForecast.VideoForecastUrl;
+      let poster = weatherData.StationForecast.VideoForecastThumbnailUrl;
+      //document.getElementById("weather-video").src = mp4;
+      console.log("mp4 Video ...");
+      setVideoSource(mp4, poster);
+    } else if (ext === "m3u8") {
+      console.log("hls video ....");
+      var videoSrcHls = weatherData.StationForecast.VideoForecastUrl;
+      setHlsVideoSource(videoSrcHls);
+    } else {
+      console.log("No video ....");
+      // const noVideo = document.getElementById("weather-video");
+      // noVideo.style.width = "924";
+    }
+    // eof video
+    const hours24 = document.querySelector("#hours24");
+    if (weatherData.HourlyForecast.length > 0) {
+      hours24.textContent = `Next ${weatherData.HourlyForecast.length} hours`;
+    }
+    const hourlyContainer = document.querySelector("#hourly-container");
+    hourlyContainer.innerHTML = "";
+    weatherData.HourlyForecast.forEach((element, index) => {
+      let hourly = '<div class="hourly-item">';
+
+      hourly += '<div class="time">';
+      if (element.Hour_Display) {
+        let timeN = extractString(element.Hour_Display, "num");
+        let time = extractString(element.Hour_Display, "str");
+
+        hourly += `<span class="timeNum">${timeN} </span> <span class="timeampm"> ${time}</span>`; //element.Hour_Display;
+      } else {
+        hourly += "-";
+      }
+
+      hourly += "</div>";
+
+      hourly += '<div class="current_text">';
+      if (element.WeatherDescShort) {
+        hourly += element.WeatherDescShort;
+      } else {
+        hourly += "-";
+      }
+
+      hourly += "</div>";
+
+      hourly += "<div>";
+      if (element.WeatherIconURL) {
+        hourly +=
+          '<img class="current-icon-top-new" src="' +
+          element.WeatherIconURL +
+          '"/>';
+      } else {
+        hourly += "-";
+      }
+      hourly += "</div>";
+      hourly += '<div class="pan">';
+      hourly += '<div class="pan_child">';
+      if (element.Temperature) {
+        hourly += `<span>${element.Temperature}&deg;</span><span class="f"> F</span>`;
+      } else {
+        hourly += "-";
+      }
+      hourly += "</div>";
+      hourly += "<div>";
+      if (element.PrecipChance) {
+        hourly += element.PrecipChance + "%";
+      } else {
+        hourly += "-";
+      }
+      hourly += "</div>";
+      hourly += "</div>";
+
+      hourly += '<div class="h-wind">Wind:';
+      if (element.WindDirection) {
+        hourly += element.WindDirection;
+      } else {
+        hourly += "- ";
+      }
+
+      if (element.WindSpeed) {
+        hourly += " " + element.WindSpeed + " mph";
+      } else {
+        hourly += "-";
+      }
+      hourly += "</div>";
+      hourly += "</div> ";
+      hourlyContainer.innerHTML += hourly;
+    });
+
+    const days = document.querySelector("#days");
+    if (weatherData.WeeklyForecast.length > 0) {
+      days.textContent = `${weatherData.WeeklyForecast.length} days forecast`;
+    }
+    const weekdays = document.querySelector("#weekly");
+    weekdays.innerHTML = "";
+
+    weatherData.WeeklyForecast.forEach((day) => {
+      let weekly = '<div class="hourly-item">';
+      weekly += '<div class="dayfont">' + day.Date + "</div>";
+      weekly += '<div class="hrline"></div>';
+      weekly += '<div class="heightemp">';
+      if (day.TempMaxF) {
+        weekly += `<span>${day.TempMaxF}&deg;</span><span class="f"> F</span>`;
+      } else {
+        weekly += "-";
+      }
+
+      weekly += "</div>";
+
+      weekly += '<div class="day-icon">';
+      if (day.WeatherIconURL) {
+        weekly +=
+          '<img class="current-icon-top" src="' + day.WeatherIconURL + '" />';
+      } else {
+        weekly += "-";
+      }
+
+      weekly += "</div>";
+      weekly += '<div class="pan">';
+
+      weekly += '<div class="lowtemp">';
+      if (day.TempMinF) {
+        weekly += `<span>${day.TempMinF}&deg;</span><span class="f"> F</span>`;
+      } else {
+        weekly += "-";
+      }
+
+      weekly += "</div>";
+      weekly += "</div>";
+
+      weekly += '<div class="wind">';
+      if (day.PrecipChance) {
+        weekly += day.PrecipChance + "%";
+      } else {
+        weekly += "-";
+      }
+
+      weekly += "</div></div>";
+
+      weekdays.innerHTML += weekly;
+    });
+  } catch (e) {
+    console.log(e);
   }
-  const currentheading = document.querySelector("#currentheading");
-  currentIndex = 0;
-  currentheading.scrollIntoView(true);
-  currentheading.scrollIntoView({
-    block: "start",
-  });
-
-  //video
-
-  const ext = weatherData.StationForecast.VideoForecastUrl.split(".").pop();
-  //var video = document.getElementById("weather-video");
-  console.log("Extenstion ", ext);
-  if (ext === "mp4") {
-    let mp4 = weatherData.StationForecast.VideoForecastUrl;
-    let poster = weatherData.StationForecast.VideoForecastThumbnailUrl;
-    //document.getElementById("weather-video").src = mp4;
-    console.log("mp4 Video ...");
-    setVideoSource(mp4, poster);
-  } else if (ext === "m3u8") {
-    console.log("hls video ....");
-    var videoSrcHls = weatherData.StationForecast.VideoForecastUrl;
-    setHlsVideoSource(videoSrcHls);
-  } else {
-    console.log("No video ....");
-    const noVideo = document.getElementById("weather-video");
-    noVideo.style.width = "924";
-  }
-  // eof video
-  const hours24 = document.querySelector("#hours24");
-  if (weatherData.HourlyForecast.length > 0) {
-    hours24.textContent = `Next ${weatherData.HourlyForecast.length} hours`;
-  }
-  const hourlyContainer = document.querySelector("#hourly-container");
-  hourlyContainer.innerHTML = "";
-  weatherData.HourlyForecast.forEach((element, index) => {
-    let hourly = '<div class="hourly-item">';
-
-    hourly += '<div class="time">';
-    if (element.Hour_Display) {
-      let timeN = extractString(element.Hour_Display, "num");
-      let time = extractString(element.Hour_Display, "str");
-
-      hourly += `<span class="timeNum">${timeN} </span> <span class="timeampm"> ${time}</span>`; //element.Hour_Display;
-    } else {
-      hourly += "-";
-    }
-
-    hourly += "</div>";
-
-    hourly += '<div class="current_text">';
-    if (element.WeatherDescShort) {
-      hourly += element.WeatherDescShort;
-    } else {
-      hourly += "-";
-    }
-
-    hourly += "</div>";
-
-    hourly += "<div>";
-    if (element.WeatherIconURL) {
-      hourly +=
-        '<img class="current-icon-top-new" src="' +
-        element.WeatherIconURL +
-        '"/>';
-    } else {
-      hourly += "-";
-    }
-    hourly += "</div>";
-    hourly += '<div class="pan">';
-    hourly += '<div class="pan_child">';
-    if (element.Temperature) {
-      hourly += `<span>${element.Temperature}&deg;</span><span class="f"> F</span>`;
-    } else {
-      hourly += "-";
-    }
-    hourly += "</div>";
-    hourly += "<div>";
-    if (element.PrecipChance) {
-      hourly += element.PrecipChance + "%";
-    } else {
-      hourly += "-";
-    }
-    hourly += "</div>";
-    hourly += "</div>";
-
-    hourly += '<div class="h-wind">Wind:';
-    if (element.WindDirection) {
-      hourly += element.WindDirection;
-    } else {
-      hourly += "- ";
-    }
-
-    if (element.WindSpeed) {
-      hourly += " " + element.WindSpeed + " mph";
-    } else {
-      hourly += "-";
-    }
-    hourly += "</div>";
-    hourly += "</div> ";
-    hourlyContainer.innerHTML += hourly;
-  });
-
-  const days = document.querySelector("#days");
-  if (weatherData.WeeklyForecast.length > 0) {
-    days.textContent = `${weatherData.WeeklyForecast.length} days forecast`;
-  }
-  const weekdays = document.querySelector("#weekly");
-  weekdays.innerHTML = "";
-
-  weatherData.WeeklyForecast.forEach((day) => {
-    let weekly = '<div class="hourly-item">';
-    weekly += '<div class="dayfont">' + day.Date + "</div>";
-    weekly += '<div class="hrline"></div>';
-    weekly += '<div class="heightemp">';
-    if (day.TempMaxF) {
-      weekly += `<span>${day.TempMaxF}&deg;</span><span class="f"> F</span>`;
-    } else {
-      weekly += "-";
-    }
-
-    weekly += "</div>";
-
-    weekly += '<div class="day-icon">';
-    if (day.WeatherIconURL) {
-      weekly +=
-        '<img class="current-icon-top" src="' + day.WeatherIconURL + '" />';
-    } else {
-      weekly += "-";
-    }
-
-    weekly += "</div>";
-    weekly += '<div class="pan">';
-
-    weekly += '<div class="lowtemp">';
-    if (day.TempMinF) {
-      weekly += `<span>${day.TempMinF}&deg;</span><span class="f"> F</span>`;
-    } else {
-      weekly += "-";
-    }
-
-    weekly += "</div>";
-    weekly += "</div>";
-
-    weekly += '<div class="wind">';
-    if (day.PrecipChance) {
-      weekly += day.PrecipChance + "%";
-    } else {
-      weekly += "-";
-    }
-
-    weekly += "</div></div>";
-
-    weekdays.innerHTML += weekly;
-  });
 }
 
 function closeWeather() {
   CATEGORYID = sessionStorage.getItem("cid");
   const weatherPage = document.getElementById("weatherPage");
   var weatherVideo = document.getElementById("weather-video");
-  weatherVideo.pause();
+  if (weatherVideo) weatherVideo.pause();
   if (hlsWeather) {
     hlsWeather.destroy(); // Clean up previous Hls instance
   }
@@ -378,39 +398,6 @@ function closeWeather() {
   removeFocus();
   weatherPage.style.display = "none";
   weatherData = "";
-  /*
-  const itemid = sessionStorage.getItem("itemId");
-  const playingItem = document.getElementById(itemid);
-  playingItem.classList.add("focused");
-
-  playingItem.scrollIntoView(true);
-  playingItem.scrollIntoView({
-    block: "start",
-  });
-  */
-  /////////////////
-  /*
-  const itemId = sessionStorage.getItem("itemId");
-  const playedVideo = document.getElementById(itemId);
-  console.log(playedVideo.getAttribute("videourl"));
-  const played = {
-    url: playedVideo.getAttribute("videourl"),
-    catid: playedVideo.getAttribute("catid"),
-    video_title: playedVideo.getAttribute("video_title"),
-    guid: playedVideo.getAttribute("guid"),
-    video_group: playedVideo.getAttribute("video_group"),
-    daiassetkey: playedVideo.getAttribute("daiassetkey"),
-    itemid: itemId,
-  };
-  miniVideo(
-    played.url,
-    played.daiassetkey,
-    played.video_group,
-    played.catid,
-    played.itemid,
-  );
-  */
-  ///////////////////
 
   videoElement.play();
   if (MINI_TIMEOUT_ID) clearTimeout(MINI_TIMEOUT_ID);

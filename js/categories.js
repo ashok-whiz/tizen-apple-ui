@@ -6,7 +6,7 @@ var ITEM_ID;
 var BASEURL = "https://prodman.whizti.com/api/";
 var IMAGE_RESIZE_URL = "https://resizer.whizti.com/api/resize/300?url=";
 
-var PUBID = 189; //189; //875; //743; //875; //743;
+var PUBID = 189 + "?platform=Samsung&version=1.3.1"; //189; //875; //743; //875; //743;
 var CUSTOME_OVERLAY;
 var SERVER_ERROR;
 var WEATHER_URL;
@@ -103,7 +103,6 @@ async function videoList() {
         const content_uri = content.uri;
         //ad macro url bof
         var contentUri;
-
         try {
           ADMACRO.__TIMESTAMP__ = Date.now();
           contentUri = content.uri.replace(
@@ -269,9 +268,26 @@ async function videoList() {
           div.innerHTML += `<div class="item" tabindex="-1" role="" video_title="${content.title}" cat_name="${cats.label}" guid="${content.assetid}"> ${content.title}</div>`;
         }
       }
+
       pageElement.appendChild(div);
     });
   });
+
+  //// about us bof//
+  let about = document.createElement("div");
+  about.className = "flex_container";
+  about.setAttribute("id", "about-us");
+  about.innerHTML += `<div class="category-name">About Us</div>`;
+  // about.innerHTML += `<div class="item" tabindex="-1" role="" video_title="aboutus" cat_name="Abbout Us" guid="9999999"> About Us</div>`;
+  about.innerHTML += `
+            <div class="item" tabindex="-1" role="" id="aboutus" video_title="About Us" cat_name="about" guid="999999" caption="" videoUrl="" catId="about" daiAssetKey="" ivideo_group="none">
+            <div class="" id="note999999"></div>           
+            <img id="thumbabout" class="thumbnail" src="./images/aboutus.png"   />
+                   
+            <div class="title" > About Us</div>
+            </div>`;
+  pageElement.appendChild(about);
+  //// about us eof //
 
   /** ## LOCAL CACHE NOT REQUIRED SINCE SPA IN USE SO DISABLED */
   //sessionStorage.setItem("cachedContent", pageElement.innerHTML);
