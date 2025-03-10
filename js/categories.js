@@ -278,7 +278,6 @@ async function videoList() {
   about.className = "flex_container";
   about.setAttribute("id", "about-us");
   about.innerHTML += `<div class="category-name">About Us</div>`;
-  // about.innerHTML += `<div class="item" tabindex="-1" role="" video_title="aboutus" cat_name="Abbout Us" guid="9999999"> About Us</div>`;
   about.innerHTML += `
             <div class="item" tabindex="-1" role="" id="aboutus" video_title="About Us" cat_name="about" guid="999999" caption="" videoUrl="" catId="about" daiAssetKey="" ivideo_group="none">
             <div class="" id="note999999"></div>           

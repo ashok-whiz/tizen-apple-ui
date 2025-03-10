@@ -174,42 +174,91 @@ async function openWeather() {
     halfCurrentConditons += "</p> </div>";
     halfCurrentConditons += "</div>";
 
-    const fullWidthCurrentConditons = `
-              <div id="current-condition-div">
+    let fullWidthCurrentConditons = `<div id="current-condition-div"><div class="current-box-temperature-novideo">`;
+    if (weatherData.CurrentCondition.Temperature) {
+      fullWidthCurrentConditons += `<div class="ftemp">${weatherData.CurrentCondition.Temperature}&#8457;</div>`;
+    } else {
+      fullWidthCurrentConditons += `<div class="ftemp">&#8457;</div>`;
+    }
+    if (weatherData.CurrentCondition.WeatherDescShort) {
+      fullWidthCurrentConditons += `<div class="current-text">${weatherData.CurrentCondition.WeatherDescShort}</div>`;
+    } else {
+      fullWidthCurrentConditons += `<div class="current-text">-</div>`;
+    }
 
-              <div class="current-box-temperature-novideo">
-              <div class="ftemp">${weatherData.CurrentCondition.Temperature}&#8457;</div>
-              <div class="current-text">${weatherData.CurrentCondition.WeatherDescShort}</div>
-              </div>
+    fullWidthCurrentConditons += `</div>`;
 
-              <div class="current-box-novideo">
-              <div class="icondiv"><img class="current-icon" src="${weatherData.CurrentCondition.WeatherIconURL}"/></div>
-              <div class="current-text">Feels like ${weatherData.CurrentCondition.RealFeelTemperature}&#8457;</div>
-              </div>
+    fullWidthCurrentConditons += `<div class="current-box-novideo">`;
+    if (weatherData.CurrentCondition.WeatherIconURL) {
+      fullWidthCurrentConditons += `<div class="icondiv"><img class="current-icon" src="${weatherData.CurrentCondition.WeatherIconURL}"/></div>`;
+    } else {
+      fullWidthCurrentConditons += `<div class="icondiv">-</div>`;
+    }
+    if (weatherData.CurrentCondition.RealFeelTemperature) {
+      fullWidthCurrentConditons += `<div class="current-text">Feels like ${weatherData.CurrentCondition.RealFeelTemperature}&#8457;</div>`;
+    } else {
+      fullWidthCurrentConditons += `<div class="current-text">Feels like -</div>`;
+    }
 
-<div class="rightbox">
-              <div class="sunrise-box-right-col">Temperature<p class="ptext" />${weatherData.CurrentCondition.HighTemperature}&#8457;/
+    fullWidthCurrentConditons += `</div>`;
+
+    fullWidthCurrentConditons += `<div class="rightbox">`;
+    if (weatherData.CurrentCondition.HighTemperature) {
+      fullWidthCurrentConditons += `<div class="sunrise-box-right-col">Temperature<p class="ptext" />${weatherData.CurrentCondition.HighTemperature}&#8457;/
               ${weatherData.CurrentCondition.LowTemperature}&#8457;</p>
-              </div>
+              </div>`;
+    } else {
+      fullWidthCurrentConditons += `<div class="sunrise-box-right-col">Temperature<p class="ptext" />-&#8457;/
+               -&#8457;</p>
+              </div>`;
+    }
 
-              <div class="sunrise-box-right-col">Wind<p class="ptext">${weatherData.CurrentCondition.WindDirection} 
-              ${weatherData.CurrentCondition.WindSpeedMiles}mph </p>
-              </div>
+    if (weatherData.CurrentCondition.WindDirection) {
+      fullWidthCurrentConditons += `<div class="sunrise-box-right-col">Wind<p class="ptext">${weatherData.CurrentCondition.WindDirection} 
+            ${weatherData.CurrentCondition.WindSpeedMiles}mph </p>
+            </div>`;
+    } else {
+      fullWidthCurrentConditons += `<div class="sunrise-box-right-col">Wind<p class="ptext">- -mph </p>
+              </div>`;
+    }
+    if (weatherData.CurrentCondition.Humidity) {
+      fullWidthCurrentConditons += `<div class="sunrise-box-right-col">Humidity<p class="ptext">${weatherData.CurrentCondition.Humidity}% </p></div>`;
+    } else {
+      fullWidthCurrentConditons += `<div class="sunrise-box-right-col">Humidity<p class="ptext">-% </p></div>`;
+    }
+    if (weatherData.CurrentCondition.Pressure) {
+      fullWidthCurrentConditons += `<div class="sunrise-box-right-col">Pressure<p class="ptext">${weatherData.CurrentCondition.Pressure}Hg</p> </div>`;
+    } else {
+      fullWidthCurrentConditons += `<div class="sunrise-box-right-col">Pressure<p class="ptext">-Hg</p> </div>`;
+    }
+    if (weatherData.CurrentCondition.Sunrise) {
+      fullWidthCurrentConditons += `<div class="sunrise-box-right-col">Sunrise<p class="ptext">${weatherData.CurrentCondition.Sunrise} </p></div>`;
+    } else {
+      fullWidthCurrentConditons += `<div class="sunrise-box-right-col">Sunrise<p class="ptext">- </p></div>`;
+    }
+    if (weatherData.CurrentCondition.Sunset) {
+      fullWidthCurrentConditons += `<div class="sunrise-box-right-col">Sunset<p class="ptext">${weatherData.CurrentCondition.Sunset} </p></div>`;
+    } else {
+      fullWidthCurrentConditons += `<div class="sunrise-box-right-col">Sunset<p class="ptext">- </p></div>`;
+    }
+    if (weatherData.CurrentCondition.Moonrise) {
+      fullWidthCurrentConditons += `<div class="sunrise-box-right-col">Moonrise<p class="ptext">${weatherData.CurrentCondition.Moonrise}</p></div>`;
+    } else {
+      fullWidthCurrentConditons += `<div class="sunrise-box-right-col">Moonrise<p class="ptext">-</p></div>`;
+    }
+    if (weatherData.CurrentCondition.Moonset) {
+      fullWidthCurrentConditons += `<div class="sunrise-box-right-col">Moonset<p class="ptext">${weatherData.CurrentCondition.Moonset} </p></div>`;
+    } else {
+      fullWidthCurrentConditons += `<div class="sunrise-box-right-col">Moonset<p class="ptext">- </p></div>`;
+    }
+    if (weatherData.CurrentCondition.MoonPhase) {
+      fullWidthCurrentConditons += `<div class="sunrise-box-right-col" id="moon">Moon phase<p class="ptext">${weatherData.CurrentCondition.MoonPhase}</p> </div>`;
+    } else {
+      fullWidthCurrentConditons += `<div class="sunrise-box-right-col" id="moon">Moon phase<p class="ptext">-</p> </div>`;
+    }
 
-              <div class="sunrise-box-right-col">Humidity<p class="ptext">${weatherData.CurrentCondition.Humidity}% </p></div>
-              <div class="sunrise-box-right-col">Pressure<p class="ptext">${weatherData.CurrentCondition.Pressure}Hg</p> </div>
-              <div class="sunrise-box-right-col">Sunrise<p class="ptext">${weatherData.CurrentCondition.Sunrise} </p></div>
-              <div class="sunrise-box-right-col">Sunset<p class="ptext">${weatherData.CurrentCondition.Sunset} </p></div>
-              <div class="sunrise-box-right-col">Moonrise<p class="ptext">${weatherData.CurrentCondition.Moonrise}</p></div>
-              <div class="sunrise-box-right-col">Moonset<p class="ptext">${weatherData.CurrentCondition.Moonset} </p></div>
-              <div class="sunrise-box-right-col" id="moon">Moon phase<p class="ptext">${weatherData.CurrentCondition.MoonPhase}</p> </div>
-</div>
+    fullWidthCurrentConditons += `</div></div>`;
 
-              </div>
-              
-            
-
-  `;
     if (weatherData.StationForecast.VideoForecastUrl) {
       table.innerHTML = halfCurrentConditons;
     } else {

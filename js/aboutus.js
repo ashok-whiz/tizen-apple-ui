@@ -4,7 +4,7 @@ function openAboutus() {
   about.innerHTML = `<div class="aboutus-head"><div><img src="./images/aboutus_header.png"/></div><div class="version">Version ${appInfo.version}</div></div>`;
   about.innerHTML += `<div class="appname">${appInfo.name} </div>`;
   about.innerHTML += `
-  <div class="content">
+  <div class="aboutus-content">
   <p>WDRB Media operates three different network anchored TV stations in the Louisville market
   (WDRB FOX / WBKI CW / My 58 MyNet)</p>
   </div>
@@ -17,7 +17,7 @@ function closeAboutus() {
   const about = document.querySelector("#aboutUs");
   about.style.display = "none";
   videoElement.play();
-  document.getElementById("aboutus").classList.add("focused");
+
   if (MINI_TIMEOUT_ID) clearTimeout(MINI_TIMEOUT_ID);
 
   miniPlayer(() => {
@@ -25,6 +25,12 @@ function closeAboutus() {
       maximizePlayer();
     }, 15000);
   });
+  const itemid = sessionStorage.getItem("itemId");
+  const playingItem = document.getElementById(itemid);
+  if (playingItem.classList.contains("focused")) {
+    playingItem.classList.remove("focused");
+  }
+  document.getElementById("aboutus").classList.add("focused");
 }
 
 function aboutPageKeys() {
